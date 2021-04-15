@@ -1,15 +1,31 @@
 from pathlib import Path
 
+from decouple import config
+
 import os
+
+import dj_database_url
 
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-SECRET_KEY = '!cnpua@t(9ozdnq@rre^+21p*c%)s#w@dk+8(r7*!9kp*)sey-'
+SECRET_KEY = config(
+    'RAFFLE_SECRET_KEY',
+    default='!cnpua@t(9ozdnq@rre^+21p*c%)s#w@dk+8(r7*!9kp*)sey-'
+)
 
-DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG = config(
+    'RAFFLE_DEBUG',
+    cast=bool,
+    default=True
+)
+
+ALLOWED_HOSTS = config(
+    'RAFFLE_ALLOWED_HOSTS',
+    default='*',
+    cast=lambda v: [s.strip() for s in v.split(',')]
+)
 
 
 # Application definition
@@ -59,16 +75,20 @@ WSGI_APPLICATION = 'sortition.wsgi.application'
 # Database
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=config(
+            'RAFFLE_DATABASE',
+            default='sqlite:///db.sqlite3'
+        )
+    )
 }
 
 
 # Password validation
 
 AUTH_USER_MODEL = 'account.User'
+
+LOGIN_URL = '/login/'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
