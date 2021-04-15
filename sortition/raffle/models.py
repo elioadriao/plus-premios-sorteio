@@ -1,6 +1,6 @@
 from django.db import models
 
-from account.models import User
+from ..account.models import User
 
 import os
 
@@ -47,6 +47,12 @@ class Raffle(models.Model):
 
     def __str__(self):
         return "Data: %s Cotas: %s" % (self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas))
+
+    def get_winner(self):
+        if self.winner > 0:
+            return User.objects.get(id=self.winner)
+        else:
+            return None
 
 
 class Quota(models.Model):

@@ -1,0 +1,26 @@
+{% extends "layout/navigation.html" %}
+
+{% load static %}
+
+{% block title %}Adicionar Rifa{% endblock %}
+
+{% block content %}
+
+<div class="default-container">
+
+  <div class="container-fluid">
+    <div class="title-a">Adicionar Rifa</div>
+  </div>
+
+  <div class="container-fluid mt-5">
+    <form class="form" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="field">
+        <button type="submit" class="btn-a mt-4">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "layout/navigation.html" %}
+
+{% load static %}
+
+{% block title %}Rifas{% endblock %}
+
+{% block content %}
+
+<div class="default-container">
+
+  <div class="container-fluid">
+    <div class="title-a">Rifas</div>
+  </div>
+
+  <div class="container-fluid mt-3">
+    <div class="container-fluid mb-3">
+      <div class="text-right">
+        <a class="btn-round" href="{% url "raffles:add-raffles" %}">
+            Adicionar Rifa
+        </a>
+      </div>
+    </div>
+    <div>
+      {% if raffles_page_result %}
+      <table class="table table-hover">
+        <thead>
+          <th>Numero de Cotas</th>
+          <th>Data de Sorteio</th>
+          <th>Vencedor</th>
+          <th class="text-right">Ações</th>
+        </thead>
+        <tbody>
+          {% for raffle in raffles_page_result %}
+          <tr>
+            <td>{{ raffle.quotas }}</td>
+            <td>{{ raffle.date }}</td>
+            <td>{{ raffle.get_winner }}</td>
+            <td class="text-right">
+              <a href="{% url "raffles:delete-raffles" raffle_pk=raffle.id %}"
+                class="btn btn-danger">
+                <span>Deletar</span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+
+      <div class="error-result mx-auto">
+        <p>Ops!</p>
+        <p>Nenhum resultado encontrado</p>
+      </div>
+
+      {% endif %}
+
+      {% if raffles_page_result.paginator.num_pages > 0 %}
+      <nav aria-label="Resultado da Busca de Veículos de Postagens" class="mb-4">
+        <ul class="pagination justify-content-center">
+
+          {% if raffles_page_result.has_previous %}
+
+          <li class="page-item">
+            <a class="page-link" href="?page=1">
+              &laquo; Primeira
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a class="page-link" href="?page={{ raffles_page_result.previous_page_number }}">
+              Anterior
+            </a>
+          </li>
+
+          {% endif %}
+
+          <li class="page-item disabled">
+            <span class="page-link">
+              Página {{ raffles_page_result.number }} de {{ raffles_page_result.paginator.num_pages }}
+            </span>
+          </li>
+
+          {% if raffles_page_result.has_next %}
+
+          <li class="page-item">
+            <a class="page-link" href="?page={{ raffles_page_result.next_page_number }}">
+              Próximo
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a class="page-link" href="?page={{ raffles_page_result.paginator.num_pages }}">
+              Última &raquo;
+            </a>
+          </li>
+
+          {% endif %}
+
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

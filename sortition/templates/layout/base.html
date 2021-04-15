@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- BootStrap CSS -->
+  <link rel="stylesheet" href="{% static 'vendor/css/frameworks/bootstrap.min.css' %}">
+
+  <!-- Select2 CSS -->
+  <link rel="stylesheet" href="{% static 'vendor/css/frameworks/select2.min.css' %}">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'vendor/css/style.css' %}">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- Datepicker-->
+  <link rel="stylesheet" href="{% static "vendor/css/frameworks/bootstrap-datepicker.standalone.min.css" %}">
+
+  <!-- icons -->
+  <link rel="icon" href="{% static 'vendor/img/icons/favicon.ico' %}">
+
+  {% block post_css %} {% endblock %}
+
+  <title>{% block title %}Plus Premios Sorteios{% endblock %}</title>
+
+</head>
+<body>
+
+  {% block body %}{% endblock %}
+
+  <!-- Bootstrap JS -->
+  <script src="{% static 'vendor/js/frameworks/jquery-3.5.1.slim.min.js' %}"></script>
+  <script src="{% static 'vendor/js/frameworks/popper.min.js' %}"></script>
+  <script src="{% static 'vendor/js/frameworks/bootstrap.min.js' %}"></script>
+ 
+  <!-- Select2 JS -->
+  <script src="{% static 'vendor/js/frameworks/select2.min.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+        $('.js-example-responsive').select2();
+    });
+  </script>
+
+  <!-- Datepicker JS-->
+  <script src="{% static "vendor/js/frameworks/bootstrap-datepicker.min.js" %}"></script>
+  <script>
+    $.fn.datepicker.dates["pt-BR"] = {
+      days: ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"],
+      daysShort: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+      daysMin: ["S", "T", "Q", "Q", "S", "S", "D"],
+      months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+      format: "dd/mm/yyyy",
+    };
+  </script>
+
+  {% block post_js %}{% endblock %}
+</body>
+</html>
