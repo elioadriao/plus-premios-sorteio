@@ -14,7 +14,8 @@ RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
     && apk add postgresql-dev \
     && pip install psycopg2 \
-    && apk del build-deps
+    && apk del build-deps \
+    && pip install -U --force-reinstall pip
 
 # install dependencies
 COPY ./requirements.txt .
