@@ -15,7 +15,8 @@ RUN apk update \
     && apk add postgresql-dev \
     && pip install psycopg2 \
     && apk del build-deps \
-    && pip install -U --force-reinstall pip
+    && pip install --upgrade pip \
+    && pip install --upgrade Pillow
 
 # install dependencies
 COPY ./requirements.txt .
