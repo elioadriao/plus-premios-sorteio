@@ -9,3 +9,5 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY . .
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
