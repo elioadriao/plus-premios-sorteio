@@ -2,25 +2,42 @@
 
 {% load static %}
 
-{% block title %}Adicionar Rifa{% endblock %}
+{% block title %}Adicionar Sorteio{% endblock %}
 
 {% block content %}
 
-<div class="default-container">
-
-  <div class="container-fluid">
-    <div class="title-a">Adicionar Rifa</div>
-  </div>
-
-  <div class="container-fluid mt-5">
-    <form class="form" method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <div class="field">
-        <button type="submit" class="btn-a mt-4">Salvar</button>
+<!--? contact-form start -->
+<section class="contact-form-area section-bg  pt-115 pb-120 fix" data-background="{% static 'vendor/img/gallery/section_bg02.jpg' %}">
+  <div class="container">
+    <div class="row justify-content-end">
+      <!-- Contact wrapper -->
+      <div class="col-xl-8 col-lg-9">
+        <div class="contact-form-wrapper">
+          <!-- From tittle -->
+          <div class="row">
+            <div class="col-lg-12">
+              <!-- Section Tittle -->
+              <div class="section-tittle mb-50">
+                <h2>Cadastrar Sorteio</h2>
+                <p>Brook presents your services with flexible, convenient and cdpose layouts. You can select your favorite layouts & elements for.</p>
+              </div>
+            </div>
+          </div>
+          <!-- form -->
+          <form method="POST" class="contact-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="row ">
+              <!-- Button -->
+              <div class="col-lg-12">
+                <button name="submit" class="submit-btn">Cadastrar</button>
+              </div>
+            </div>
+          </form>	
+        </div>
       </div>
-    </form>
+    </div>
   </div>
-
-</div>
+</section>
+<!-- contact-form end -->
 {% endblock %}

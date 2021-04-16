@@ -14,7 +14,7 @@ def login(request):
     if form.is_valid():
         user = form.get_user()
         auth_login(request, user)
-        return redirect(request.GET.get("index"))
+        return redirect("index")
     return render(request, "account/login.html", context={"form": form})
 
 

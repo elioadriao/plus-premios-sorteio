@@ -24,7 +24,8 @@
             </div>
           </div>
           <!-- form -->
-          <form action="#" class="contact-form">
+          <form method="POST" class="contact-form">
+            {% csrf_token %}
             {{ form.as_p }}
             <div class="row ">
               <!-- Button -->

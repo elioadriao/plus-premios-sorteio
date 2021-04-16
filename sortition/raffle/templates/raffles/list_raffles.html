@@ -2,60 +2,48 @@
 
 {% load static %}
 
-{% block title %}Rifas{% endblock %}
+{% block title %}Sorteios{% endblock %}
 
 {% block content %}
 
-<div class="default-container">
-
-  <div class="container-fluid">
-    <div class="title-a">Rifas</div>
-  </div>
-
-  <div class="container-fluid mt-3">
-    <div class="container-fluid mb-3">
-      <div class="text-right">
-        <a class="btn-round" href="{% url "raffles:add-raffles" %}">
-            Adicionar Rifa
-        </a>
+<!--Team Ara Start -->
+<div class="team-area section-padding30">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="cl-xl-7 col-lg-8 col-md-10">
+        <!-- Section Tittle -->
+        <div class="section-tittle text-center mb-70">
+          <h2>Plus Prêmios Sorteios</h2>
+        </div>
       </div>
     </div>
-    <div>
-      {% if raffles_page_result %}
-      <table class="table table-hover">
-        <thead>
-          <th>Numero de Cotas</th>
-          <th>Data de Sorteio</th>
-          <th>Vencedor</th>
-          <th class="text-right">Ações</th>
-        </thead>
-        <tbody>
-          {% for raffle in raffles_page_result %}
-          <tr>
-            <td>{{ raffle.quotas }}</td>
-            <td>{{ raffle.date }}</td>
-            <td>{{ raffle.get_winner }}</td>
-            <td class="text-right">
-              <a href="{% url "raffles:delete-raffles" raffle_pk=raffle.id %}"
-                class="btn btn-danger">
-                <span>Deletar</span>
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      {% else %}
-
-      <div class="error-result mx-auto">
-        <p>Ops!</p>
-        <p>Nenhum resultado encontrado</p>
-      </div>
-
-      {% endif %}
-
-      {% if raffles_page_result.paginator.num_pages > 0 %}
+    <div class="row">
+      {% for raffle in raffles_page_result%}
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="single-team mb-30 text-center">
+            <div class="team-img">
+              <img src="{% static 'vendor/img/phone.png' %}" alt="">
+              <div class="team-caption">
+                <h3><a href="#">Titulo Sorteio</a></h3>
+                <h4>{{ raffle.date|date:"d/m/Y H:i" }}</h4>
+                <p>Cotas: {{ raffle.quotas }}</p>
+                <!-- Blog Social -->
+                <div class="team-social">
+                  <ul>
+                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    <li><a href="#"><i class="fa fa-share"></i></a></li>
+                    {% if request.user.is_superuser %}
+                    <li><a href="{% url 'raffles:delete-raffles' raffle_pk=raffle.id %}"><i class="fa fa-trash"></i></a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% if raffles_page_result.paginator.num_pages > 0 %}
       <nav aria-label="Resultado da Busca de Veículos de Postagens" class="mb-4">
         <ul class="pagination justify-content-center">
 
@@ -100,9 +88,8 @@
         </ul>
       </nav>
       {% endif %}
-    </div>
   </div>
-
 </div>
+<!-- Team Ara End -->
 
 {% endblock %}

@@ -7,7 +7,7 @@ from .forms import RaffleForm
 
 
 def list_raffles(request):
-    paginator = Paginator(Raffle.objects.all().order_by("-date"), 5)
+    paginator = Paginator(Raffle.objects.all().order_by("-date"), 3)
 
     page_number = request.GET.get("page")
     raffles_page_result = paginator.get_page(page_number)

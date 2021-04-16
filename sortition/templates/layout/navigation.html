@@ -25,9 +25,13 @@
           <div class="col-xl-12">
             <div class="row d-flex justify-content-between align-items-center">
               <div class="header-info-left">
-                <ul>     
-                  <li>Phone: +99 (0) 101 0000 888</li>
-                  <li>Email: noreply@yourdomain.com</li>
+                <ul>
+                  {% if user.is_authenticated %}
+                  <li>Olá, {{ request.user.name }}</li>
+                  {% else %}
+                  <li>Olá, Anonimo</li>
+                  {% endif %}
+                  <li>Seja Bem Vindo!</li>
                 </ul>
               </div>
                 <div class="header-info-right">
@@ -47,52 +51,57 @@
           <div class="row align-items-center">
             <!-- Logo -->
             <div class="col-xl-2 col-lg-2">
-                <div class="logo">
-                    <a href="#"><img src="{% static 'vendor/img/logo/logo.png' %}" alt=""></a>
-      </div>
-    </div>
-    <div class="col-xl-10 col-lg-10">
-      <div class="menu-wrapper  d-flex align-items-center justify-content-end">
-        <!-- Main-menu -->
-        <div class="main-menu d-none d-lg-block">
-          <nav>
-            <ul id="navigation">
-              <li><a href="{% url 'index' %}">Sorteios</a></li>
-              <li><a href="#">Ganhadores</a></li>
-              <li><a href="#">Pagamento</a></li>
-              <li><a href="#">Contato</a></li>
-            </ul>
-          </nav>
+              <div class="logo">
+                <a href="#"><img src="{% static 'vendor/img/logo/logo.png' %}" alt=""></a>
+              </div>
+            </div>
+            <div class="col-xl-10 col-lg-10">
+              <div class="menu-wrapper  d-flex align-items-center justify-content-end">
+                <!-- Main-menu -->
+                <div class="main-menu d-none d-lg-block">
+                  <nav>
+                    <ul id="navigation">
+                      <li><a href="{% url 'index' %}">Sorteios</a></li>
+                      <li><a href="#">Ganhadores</a></li>
+                      <li><a href="#">Pagamento</a></li>
+                      <li><a href="#">Contato</a></li>
+                    </ul>
+                  </nav>
+                </div>
+                <!-- Header-btn -->
+                <div class="header-right-btn d-none d-lg-block ml-20">
+                {% if user.is_staff %}
+                  <a href="{% url 'raffles:add-raffles' %}" class="header-btn">
+                    <i class="fas fa-user mr-2"></i>Adicionar Sorteio
+                  </a>
+                {% endif %}  
+                {% if user.is_authenticated %}
+                  <a href="{% url 'account:detail-users' %}" class="header-btn">
+                    <i class="fas fa-user mr-2"></i>Painel
+                  </a>
+                  <a href="{% url 'account:logout' %}" class="header-btn">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                  </a>
+                {% else %}
+                  <a href="{% url 'account:login' %}" class="header-btn">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Entrar
+                  </a>
+                  <a href="{% url 'account:add-users' %}" class="header-btn">
+                    <i class="fas fa-user-plus mr-2"></i>Cadastro
+                  </a>
+                {% endif %}
+                </div>
+              </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="col-12">
+              <div class="mobile_menu d-block d-lg-none"></div>
+            </div>
+          </div>
         </div>
-        <!-- Header-btn -->
-        <div class="header-right-btn d-none d-lg-block ml-20">
-        {% if user.is_authenticated %}
-          <a href="{% url 'account:detail-users' %}" class="header-btn">
-            <i class="fas fa-user mr-2"></i>Painel
-          </a>
-          <a href="{% url 'account:logout' %}" class="header-btn">
-            <i class="fas fa-sign-out-alt mr-2"></i>Sair
-          </a>
-        {% else %}
-          <a href="{% url 'account:login' %}" class="header-btn">
-            <i class="fas fa-sign-in-alt mr-2"></i>Entrar
-          </a>
-          <a href="{% url 'account:add-users' %}" class="header-btn">
-            <i class="fas fa-user-plus mr-2"></i>Cadastro
-          </a>
-        {% endif %}
-        </div>
       </div>
-    </div>
-    <!-- Mobile Menu -->
-    <div class="col-12">
-      <div class="mobile_menu d-block d-lg-none"></div>
     </div>
   </div>
-</div>
-</div>
-</div>
-</div>
 <!-- Header End -->
 </header>
 <main>
