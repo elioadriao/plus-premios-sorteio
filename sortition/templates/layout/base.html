@@ -1,64 +1,67 @@
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html class="no-js" lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Plus Prêmios Sorteios{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'vendor/img/favicon.ico' %}">
 
-  <!-- BootStrap CSS -->
-  <link rel="stylesheet" href="{% static 'vendor/css/frameworks/bootstrap.min.css' %}">
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'vendor/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/style.css' %}">
 
-  <!-- Select2 CSS -->
-  <link rel="stylesheet" href="{% static 'vendor/css/frameworks/select2.min.css' %}">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="{% static 'vendor/css/style.css' %}">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-
-  <!-- Datepicker-->
-  <link rel="stylesheet" href="{% static "vendor/css/frameworks/bootstrap-datepicker.standalone.min.css" %}">
-
-  <!-- icons -->
-  <link rel="icon" href="{% static 'vendor/img/icons/favicon.ico' %}">
-
-  {% block post_css %} {% endblock %}
-
-  <title>{% block title %}Plus Premios Sorteios{% endblock %}</title>
-
+    {% block post_css %}{% endblock %}
 </head>
 <body>
+    {% block body %}{% endblock %}
 
-  {% block body %}{% endblock %}
+    <!-- JS here -->
 
-  <!-- Bootstrap JS -->
-  <script src="{% static 'vendor/js/frameworks/jquery-3.5.1.slim.min.js' %}"></script>
-  <script src="{% static 'vendor/js/frameworks/popper.min.js' %}"></script>
-  <script src="{% static 'vendor/js/frameworks/bootstrap.min.js' %}"></script>
- 
-  <!-- Select2 JS -->
-  <script src="{% static 'vendor/js/frameworks/select2.min.js' %}"></script>
-  <script>
-    $(document).ready(function() {
-        $('.js-example-responsive').select2();
-    });
-  </script>
+    <script src="{% static 'vendor/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="{% static 'vendor/js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'vendor/js/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="{% static 'vendor/js/jquery.slicknav.min.js' %}"></script>
 
-  <!-- Datepicker JS-->
-  <script src="{% static "vendor/js/frameworks/bootstrap-datepicker.min.js" %}"></script>
-  <script>
-    $.fn.datepicker.dates["pt-BR"] = {
-      days: ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"],
-      daysShort: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-      daysMin: ["S", "T", "Q", "Q", "S", "S", "D"],
-      months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-      monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-      format: "dd/mm/yyyy",
-    };
-  </script>
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="{% static 'vendor/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'vendor/js/slick.min.js' %}"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="{% static 'vendor/js/wow.min.js' %}"></script>
+    <script src="{% static 'vendor/js/animated.headline.js' %}"></script>
+    <script src="{% static 'vendor/js/jquery.magnific-popup.js' %}"></script>
 
-  {% block post_js %}{% endblock %}
+    <!-- Nice-select, sticky -->
+    <script src="{% static 'vendor/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'vendor/js/jquery.sticky.js' %}"></script>
+
+    <!-- contact js -->
+    <script src="{% static 'vendor/js/contact.js' %}"></script>
+    <script src="{% static 'vendor/js/jquery.form.js' %}"></script>
+    <script src="{% static 'vendor/js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'vendor/js/mail-script.js' %}"></script>
+    <script src="{% static 'vendor/js/jquery.ajaxchimp.min.js' %}"></script>
+
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src="{% static 'vendor/js/plugins.js' %}"></script>
+    <script src="{% static 'vendor/js/main.js' %}"></script>
+    {% block post_js %}{% endblock %}
+
 </body>
 </html>
