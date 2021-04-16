@@ -1,0 +1,39 @@
+{% extends "layout/navigation.html" %}
+
+{% load static %}
+
+{% block title %}Autenticação{% endblock %}
+
+{% block content %}
+
+<!--? About Area Start -->
+<div class="about-low-area padding-bottom">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="about-caption mb-50">
+          <!-- Section Tittle -->
+          <div class="section-tittle mb-35">
+            <h2>Painel de Usuário</h2>
+          </div>
+          <p>Nome: {{ user.name }}</p>
+          <p>Telefone: {{ user.phone }}</p>
+          <p>Email: {{ user.email }}</p>
+          <p>Rifas:</p>
+          <p>Prêmios Vencidos:</p>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <!-- about-img -->
+        <div class="about-img ">
+          <div class="about-font-img">
+            <img src="{% static 'vendor/img/gallery/team1.png' %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- About Area End -->
+
+{% endblock %}

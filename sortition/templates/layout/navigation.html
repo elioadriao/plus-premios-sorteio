@@ -57,7 +57,7 @@
         <div class="main-menu d-none d-lg-block">
           <nav>
             <ul id="navigation">
-              <li><a href="#">Sorteios</a></li>
+              <li><a href="{% url 'index' %}">Sorteios</a></li>
               <li><a href="#">Ganhadores</a></li>
               <li><a href="#">Pagamento</a></li>
               <li><a href="#">Contato</a></li>
@@ -66,12 +66,21 @@
         </div>
         <!-- Header-btn -->
         <div class="header-right-btn d-none d-lg-block ml-20">
-          <a href="#" class="header-btn">
+        {% if user.is_authenticated %}
+          <a href="{% url 'account:detail-users' %}" class="header-btn">
+            <i class="fas fa-user mr-2"></i>Painel
+          </a>
+          <a href="{% url 'account:logout' %}" class="header-btn">
+            <i class="fas fa-sign-out-alt mr-2"></i>Sair
+          </a>
+        {% else %}
+          <a href="{% url 'account:login' %}" class="header-btn">
             <i class="fas fa-sign-in-alt mr-2"></i>Entrar
           </a>
-          <a href="#" class="header-btn">
+          <a href="{% url 'account:add-users' %}" class="header-btn">
             <i class="fas fa-user-plus mr-2"></i>Cadastro
           </a>
+        {% endif %}
         </div>
       </div>
     </div>
