@@ -1,0 +1,40 @@
+{% extends "layout/navigation.html" %}
+
+{% load static %}
+
+{% block title %}Detalhes do Sorteio{% endblock %}
+
+{% block content %}
+
+<!--? About Area Start -->
+<div class="about-low-area padding-bottom">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="about-caption mb-50">
+          <!-- Section Tittle -->
+          <div class="section-tittle mb-35">
+            <h2>Detalhes do Sorteio</h2>
+            <h3>Data: {{ raffle.date|date:"d/m/Y H:i" }}</h3>
+          </div>
+          <p>Titulo: {{ raffle.title }}</p>
+          <p>Descrição: {{ raffle.description }}</p>
+          {% if raffle.get_winner is not None %}
+          <p>Vencedor: {{ raffle.get_winner }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <!-- about-img -->
+        <div class="about-img ">
+          <div class="about-font-img">
+            <img src="{% static 'vendor/img/gallery/team1.png' %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- About Area End -->
+
+{% endblock %}

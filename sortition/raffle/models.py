@@ -17,6 +17,17 @@ class Raffle(models.Model):
         verbose_name = "Rifa"
         verbose_name_plural = "Rifas"
 
+    title = models.CharField(
+        verbose_name="Titulo do Sorteio",
+        max_length=255,
+        null=True
+    )
+    description = models.CharField(
+        verbose_name="Descrição do Sorteio",
+        max_length=255,
+        null=True,
+        blank=True
+    )
     quotas = models.IntegerField(
         verbose_name="Número de Cotas",
         default=1000

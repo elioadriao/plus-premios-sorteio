@@ -7,7 +7,7 @@
 {% block content %}
 
 <!--Team Ara Start -->
-<div class="team-area section-padding30">
+<div class="team-area">
   <div class="container">
     <div class="row justify-content-center">
       <div class="cl-xl-7 col-lg-8 col-md-10">
@@ -24,7 +24,7 @@
             <div class="team-img">
               <img src="{% static 'vendor/img/phone.png' %}" alt="">
               <div class="team-caption">
-                <h3><a href="#">Titulo Sorteio</a></h3>
+                <h3><a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">{{ raffle.title }}</a></h3>
                 <h4>{{ raffle.date|date:"d/m/Y H:i" }}</h4>
                 <p>Cotas: {{ raffle.quotas }}</p>
                 <!-- Blog Social -->
