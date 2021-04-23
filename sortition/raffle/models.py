@@ -17,6 +17,17 @@ class Raffle(models.Model):
         verbose_name = "Rifa"
         verbose_name_plural = "Rifas"
 
+    title = models.CharField(
+        verbose_name="Titulo do Sorteio",
+        max_length=255,
+        null=True
+    )
+    description = models.CharField(
+        verbose_name="Descrição do Sorteio",
+        max_length=255,
+        null=True,
+        blank=True
+    )
     quotas = models.IntegerField(
         verbose_name="Número de Cotas",
         default=1000
@@ -46,7 +57,9 @@ class Raffle(models.Model):
     )
 
     def __str__(self):
-        return "Data: %s Cotas: %s" % (self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas))
+        return "ID: %s Data: %s Cotas: %s" % (
+            str(self.id), self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas)
+        )
 
     def get_winner(self):
         if self.winner > 0:
@@ -91,4 +104,15 @@ class Quota(models.Model):
     )
 
     def __str__(self):
-        return "Dono: %s Numero: %s" % (self.owner, str(self.number))
+        return "ID: %s Dono: %s Numero: %s" % (str(self.id), self.owner, str(self.number))
+
+    def get_status(self):
+        return dict(self.QUOTA_STATUS).get(self.status)
+
+    def get_btn(self):
+        if self.status == "open":
+            return "success"
+        elif self.status == "reserved":
+            return "warning"
+        else:
+            return "primary"
