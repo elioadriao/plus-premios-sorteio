@@ -57,7 +57,9 @@ class Raffle(models.Model):
     )
 
     def __str__(self):
-        return "Data: %s Cotas: %s" % (self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas))
+        return "ID: %s Data: %s Cotas: %s" % (
+            str(self.id), self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas)
+        )
 
     def get_winner(self):
         if self.winner > 0:
@@ -102,4 +104,7 @@ class Quota(models.Model):
     )
 
     def __str__(self):
-        return "Dono: %s Numero: %s" % (self.owner, str(self.number))
+        return "ID: %s Dono: %s Numero: %s" % (str(self.id), self.owner, str(self.number))
+
+    def get_status(self):
+        return dict(self.QUOTA_STATUS).get(self.status)

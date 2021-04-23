@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.core.paginator import Paginator
 
-from .models import Raffle
-from .forms import RaffleForm
+from .models import Raffle, Quota
+from .forms import RaffleForm, QuotaForm
 
 
 def list_raffles(request):
@@ -27,7 +27,10 @@ def add_raffles(request):
     form = RaffleForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        raffle = form.save()
+        objs = (Quota(raffle=raffle, number=i+1) for i in range(raffle.quotas))
+        Quota.objects.bulk_create(objs)
+
         return redirect(reverse("raffles:list-raffles"))
 
     return render(
@@ -51,5 +54,14 @@ def delete_raffles(request, raffle_pk=None):
 @login_required
 def detail_raffles(request, raffle_pk=None):
     raffle = get_object_or_404(Raffle.objects, pk=raffle_pk)
+    form = QuotaForm(request.POST or None)
 
-    return render(request, "raffles/detail_raffles.html", context={"raffle": raffle})
+    if form.is_valid():
+        quota = form.save(commit=False)
+        Quota.objects.filter(
+            raffle=raffle, number=quota.number
+            ).update(status="reserved", owner=request.user)
+
+        return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
+
+    return render(request, "raffles/detail_raffles.html", context={"raffle": raffle, "form": form})
