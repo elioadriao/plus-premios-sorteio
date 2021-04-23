@@ -57,10 +57,14 @@ def detail_raffles(request, raffle_pk=None):
     form = QuotaForm(request.POST or None)
 
     if form.is_valid():
-        quota = form.save(commit=False)
-        Quota.objects.filter(
-            raffle=raffle, number=quota.number
-            ).update(status="reserved", owner=request.user)
+        form_quota = form.save(commit=False)
+        quota = get_object_or_404(Quota.objects, raffle=raffle, number=form_quota.number)
+        if request.user.is_superuser and quota.status == "reserved":
+            quota.status = "paid"
+        else:
+            quota.status = "reserved"
+            quota.owner = request.user
+        quota.save()
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 

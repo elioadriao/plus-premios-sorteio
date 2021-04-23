@@ -108,3 +108,11 @@ class Quota(models.Model):
 
     def get_status(self):
         return dict(self.QUOTA_STATUS).get(self.status)
+
+    def get_btn(self):
+        if self.status == "open":
+            return "success"
+        elif self.status == "reserved":
+            return "warning"
+        else:
+            return "primary"
