@@ -18,9 +18,9 @@
             <h3>Data: {{ raffle.date|date:"d/m/Y H:i" }}</h3>
           </div>
           <p>Titulo: {{ raffle.title }}</p>
-          <p>Descrição: {{ raffle.description }}</p>
+          <p>Descrição:<br>{{ raffle.description }}</p>
           {% if raffle.get_winner is not None %}
-          <p>Vencedor: {{ raffle.get_winner }}</p>
+          <p>Vencedor:<br>{{ raffle.get_winner }}</p>
           {% endif %}
         </div>
       </div>

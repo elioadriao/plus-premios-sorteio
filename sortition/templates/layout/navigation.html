@@ -10,7 +10,7 @@
     <div class="preloader-inner position-relative">
       <div class="preloader-circle"></div>
       <div class="preloader-img pere-text">
-        <img src="{% static 'vendor/img/logo/loder.jpg" alt="">
+        <!--img src="{% static 'vendor/img/logo/loder.jpg" alt=""-->
       </div>
     </div>
   </div>
@@ -52,7 +52,7 @@
             <!-- Logo -->
             <div class="col-xl-2 col-lg-2">
               <div class="logo">
-                <a href="#"><img src="{% static 'vendor/img/logo/logo.png' %}" alt=""></a>
+                <a href="{% url 'index' %}">Plus Premios Sorteios</a>
               </div>
             </div>
             <div class="col-xl-10 col-lg-10">
@@ -65,31 +65,32 @@
                       <li><a href="#">Ganhadores</a></li>
                       <li><a href="#">Pagamento</a></li>
                       <li><a href="#">Contato</a></li>
+                      <li><hr></li>
+                      {% if user.is_authenticated %}
+                      <li>
+                        <a href="{% url 'account:detail-users' %}" class="header-btn">
+                          <i class="fas fa-user mr-2"></i>Painel
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'account:logout' %}" class="header-btn">
+                          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                        </a>
+                      </li>
+                      {% else %}
+                      <li>
+                        <a href="{% url 'account:login' %}" class="header-btn">
+                          <i class="fas fa-sign-in-alt mr-2"></i>Entrar
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'account:add-users' %}" class="header-btn">
+                          <i class="fas fa-user-plus mr-2"></i>Cadastro
+                        </a>
+                      </li>
+                      {% endif %}
                     </ul>
                   </nav>
-                </div>
-                <!-- Header-btn -->
-                <div class="header-right-btn d-none d-lg-block ml-20">
-                {% if user.is_staff %}
-                  <a href="{% url 'raffles:add-raffles' %}" class="header-btn">
-                    <i class="fas fa-user mr-2"></i>Adicionar Sorteio
-                  </a>
-                {% endif %}  
-                {% if user.is_authenticated %}
-                  <a href="{% url 'account:detail-users' %}" class="header-btn">
-                    <i class="fas fa-user mr-2"></i>Painel
-                  </a>
-                  <a href="{% url 'account:logout' %}" class="header-btn">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Sair
-                  </a>
-                {% else %}
-                  <a href="{% url 'account:login' %}" class="header-btn">
-                    <i class="fas fa-sign-in-alt mr-2"></i>Entrar
-                  </a>
-                  <a href="{% url 'account:add-users' %}" class="header-btn">
-                    <i class="fas fa-user-plus mr-2"></i>Cadastro
-                  </a>
-                {% endif %}
                 </div>
               </div>
             </div>
@@ -104,7 +105,7 @@
   </div>
 <!-- Header End -->
 </header>
-<main>
+<main class="mt-3">
   {% block content %}{% endblock %}
 </main>
 <footer>

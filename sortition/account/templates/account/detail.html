@@ -5,35 +5,50 @@
 {% block title %}Autenticação{% endblock %}
 
 {% block content %}
-
-<!--? About Area Start -->
-<div class="about-low-area padding-bottom">
+<!--? contact-form start -->
+<section class="contact-form-area">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-12">
-        <div class="about-caption mb-50">
-          <!-- Section Tittle -->
-          <div class="section-tittle mb-35">
-            <h2>Painel de Usuário</h2>
+    <div class="row justify-content-center">
+      <!-- Contact wrapper -->
+      <div class="col-xl-8 col-lg-9">
+        <div class="contact-form-wrapper">
+          <!-- From tittle -->
+          <div class="row">
+            <div class="col-lg-12">
+              <!-- Section Tittle -->
+              <div class="section-tittle mb-50">
+                <h2>Painel de Usuário</h2>
+              </div>
+            </div>
           </div>
-          <p>Nome: {{ user.name }}</p>
-          <p>Telefone: {{ user.phone }}</p>
-          <p>Email: {{ user.email }}</p>
-          <p>Rifas:</p>
-          <p>Prêmios Vencidos:</p>
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-12">
-        <!-- about-img -->
-        <div class="about-img ">
-          <div class="about-font-img">
-            <img src="{% static 'vendor/img/gallery/team1.png' %}" alt="">
-          </div>
+          <!-- form -->
+          <h4>Nome de Usuário</h4>
+          <h5 class="ml-4">{{ user.name }}</h5>
+          <h4>Telefone</h4>
+          <h5 class="ml-4">{{ user.phone }}</h5>
+          <h4>Email</h4>
+          {% if user.email %}
+          <h5 class="ml-4">{{ user.email }}</h5>
+          {% else %}
+          <h5 class="ml-4">Não Possui Email</h5>
+          {% endif %}
+          <h4>Rifas</h4>
+          {% if user.quota_set.all %}
+          {% for quota in user.quota_set.all %}
+            <a href="{% url 'raffles:detail-raffles' raffle_pk=quota.raffle.id %}" class="genric-btn {{ quota.get_btn }} small radius">
+              Cota: {{ quota.number }} | {{ quota.get_status }}
+            </a>
+            {% endfor %}
+          {% else %}
+          <h5 class="ml-4">Não Possui Rifas</h5>
+          {% endif %}
+          <h4>Prêmios Vencidos</h4>
+          <h5 class="ml-4">Nenhum Premio Vencido.</h5>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- About Area End -->
+</section>
+<!-- contact-form end -->
 
 {% endblock %}

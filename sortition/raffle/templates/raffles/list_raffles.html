@@ -14,7 +14,13 @@
         <!-- Section Tittle -->
         <div class="section-tittle text-center mb-70">
           <h2>Plus Prêmios Sorteios</h2>
+          {% if user.is_staff %}
+          <a href="{% url 'raffles:add-raffles' %}" class="btn">
+            <i class="fas fa-user mr-2"></i>Adicionar Sorteio
+          </a>
+        {% endif %}  
         </div>
+        
       </div>
     </div>
     <div class="row">
