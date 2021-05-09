@@ -6,7 +6,7 @@ from .models import Address, User
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("name", "email", "phone", "is_whatsapp", "whatsapp", "profile")
+        fields = ("name", "email", "phone")
 
 
 class AddressForm(forms.ModelForm):
