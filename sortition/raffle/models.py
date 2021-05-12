@@ -32,6 +32,11 @@ class Raffle(models.Model):
         verbose_name="Número de Cotas",
         default=1000
     )
+    quota_value = models.CharField(
+        verbose_name="Valor Unitário da Cota",
+        max_length=10,
+        default="R$ 100,00"
+    )
     date = models.DateTimeField(
         verbose_name="Data do Sorteio"
     )
@@ -41,7 +46,7 @@ class Raffle(models.Model):
     )
     image = models.ImageField(
         upload_to=get_upload_to,
-        verbose_name="Imagem de Perfil",
+        verbose_name="Imagem Ilustrativa do Sorteio",
         null=True,
         blank=True
     )

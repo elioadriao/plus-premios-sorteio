@@ -24,10 +24,12 @@ def list_raffles(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def add_raffles(request):
-    form = RaffleForm(request.POST or None)
+    form = RaffleForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
-        raffle = form.save()
+        raffle = form.save(commit=False)
+        raffle.created_by = request.user
+        raffle.save()
         objs = (Quota(raffle=raffle, number=i+1) for i in range(raffle.quotas))
         Quota.objects.bulk_create(objs)
 
@@ -68,4 +70,7 @@ def detail_raffles(request, raffle_pk=None):
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 
-    return render(request, "raffles/detail_raffles.html", context={"raffle": raffle, "form": form})
+    return render(
+        request, "raffles/detail_raffles.html",
+        context={"raffle": raffle, "form": form, "quotas": raffle.quota_set.all().order_by("number")}
+    )

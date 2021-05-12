@@ -6,7 +6,7 @@ from .models import Raffle, Quota
 class RaffleForm(forms.ModelForm):
     class Meta:
         model = Raffle
-        fields = ("title", "description", "quotas", "date", "image")
+        fields = ("title", "description", "quotas", "quota_value", "date", "image")
 
 
 class QuotaForm(forms.ModelForm):
@@ -16,4 +16,4 @@ class QuotaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["number"].widget.attrs["readonly"] = True
+        self.fields["number"].widget = forms.HiddenInput()

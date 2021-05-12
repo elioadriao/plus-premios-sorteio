@@ -15,28 +15,36 @@
           <!-- Section Tittle -->
           <div class="section-tittle mb-35">
             <h2>Detalhes do Sorteio</h2>
-            <h3>Data: {{ raffle.date|date:"d/m/Y H:i" }}</h3>
+            <h3>{{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</h3>
+            <h5>Valor Unitário da Cota {{ raffle.quota_value }}</h5>
           </div>
-          <p>Titulo: {{ raffle.title }}</p>
-          <p>Descrição:<br>{{ raffle.description }}</p>
+          <h4>{{ raffle.title }}</h4>
+          <br>
+          <h5 class="ml-2">{{ raffle.description }}</h5>
           {% if raffle.get_winner is not None %}
-          <p>Vencedor:<br>{{ raffle.get_winner }}</p>
+          <h5>Vencedor<br>{{ raffle.get_winner }}</h5>
           {% endif %}
         </div>
       </div>
       <div class="col-lg-6 col-md-12">
         <div class="about-img">
           <div class="img-fluid">
-            <img style="max-height: 350px;" src="{% static 'vendor/img/phone.png' %}" alt="">
+            {% if raffle.image %}
+            <img style="max-height: 350px;" src="{{ raffle.image.url }}" alt="">
+            {% else %}
+            <img style="max-height: 350px;" src="{% static 'vendor/img/empty.jpg' %}" alt="">
+            {% endif %}
           </div>
         </div>
       </div>
-      <div class="col-lg-12 col-md-12">
-        {% for quota in raffle.quota_set.all %}
-        <a href="#" class="genric-btn {{ quota.get_btn }} small radius open-modal" data-toggle="modal" data-target="#quotaModal" data-number={{ quota.number }} data-status={{ quota.status }}>
-          Cota: {{ quota.number }} | {{ quota.get_status }}
-        </a>
-        {% endfor %}
+      <div class="col-lg-12 col-md-12 contact-form-area">
+        <div class="contact-form-wrapper">
+          {% for quota in quotas %}
+          <a href="#" class="genric-btn {{ quota.get_btn }} small radius open-modal" data-toggle="modal" data-target="#quotaModal" data-number={{ quota.number }} data-status={{ quota.status }}>
+            Cota: {{ quota.number }} | {{ quota.get_status }}
+          </a>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
@@ -47,16 +55,17 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title title-a" id="quotaModalLabel">Reservar Cota</h5>
+        <h3 class="modal-title title-a" id="quotaModalLabel">Reservar Cota </h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <h3>Valor Da Cota {{ raffle.quota_value }}</h3>
         <form class="modal-form" method="post">
           {% csrf_token %}
           {{ form.as_p }}
-          <button id="btn_submit" class="btn radius" type="submit">Reservar</button>
+          <button id="btn_submit" class="btn radius btn-block" type="submit">Reservar</button>
         </form>
       </div>
     </div>
@@ -65,21 +74,24 @@
 
 {% endblock %}
 {% block post_js %}
-<script>
+<script type="text/javascript">
   $(document).on("click", ".open-modal", function () {
     var quotaNumber = $(this).data("number");
     var quotaStatus = $(this).data("status");
     $("#id_number").val( quotaNumber );
-    console.log(quotaStatus);
+
     if (quotaStatus == "paid") {
       $("#btn_submit").prop("hidden", true);
+      $("#quotaModalLabel").text("Cota " + quotaNumber);
     }else{
       $("#btn_submit").prop("hidden", false);
-    }
-    if (quotaStatus == "open") {
-      $("#btn_submit").text("Reservar");
-    }else{
-      $("#btn_submit").text("Confirmar Pagamento");
+      if (quotaStatus == "open") {
+        $("#btn_submit").text("Reservar");
+        $("#quotaModalLabel").text("Reservar Cota " + quotaNumber);
+      }else {
+        $("#btn_submit").text("Confirmar Pagamento");
+        $("#quotaModalLabel").text("Confirmar Pagamento Cota " + quotaNumber);
+      }
     }
   });
 </script>
