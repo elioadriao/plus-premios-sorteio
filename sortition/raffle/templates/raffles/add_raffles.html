@@ -24,7 +24,7 @@
             </div>
           </div>
           <!-- form -->
-          <form method="POST" class="contact-form">
+          <form method="POST" class="contact-form" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <div class="row ">
@@ -40,4 +40,20 @@
   </div>
 </section>
 <!-- contact-form end -->
+{% endblock %}
+{% block post_js %}
+<script type="text/javascript">
+  $.datetimepicker.setLocale("pt-BR");
+  $("#id_date").datetimepicker({
+    minDate: 0,
+    format: "d/m/Y H:i"
+  });
+  $("#id_quota_value").maskMoney({
+    prefix:"R$ ",
+    allowNegative: false,
+    thousands:".",
+    decimal:",",
+    affixesStay: true
+  });
+</script>
 {% endblock %}

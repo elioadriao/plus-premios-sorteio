@@ -18,7 +18,7 @@
           <a href="{% url 'raffles:add-raffles' %}" class="btn">
             <i class="fas fa-user mr-2"></i>Adicionar Sorteio
           </a>
-        {% endif %}  
+          {% endif %}  
         </div>
         
       </div>
@@ -28,7 +28,11 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
           <div class="single-team mb-30 text-center">
             <div class="team-img">
-              <img src="{% static 'vendor/img/phone.png' %}" alt="">
+              {% if raffle.image %}
+              <img style="max-height: 300px; max-width: 300px;" src="{{ raffle.image.url }}" alt="">
+              {% else %}
+              <img style="max-height: 300px; max-width: 300px;" src="{% static 'vendor/img/empty.jpg' %}" alt="">
+              {% endif %}
               <div class="team-caption">
                 <h3><a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">{{ raffle.title }}</a></h3>
                 <h4>{{ raffle.date|date:"d/m/Y H:i" }}</h4>

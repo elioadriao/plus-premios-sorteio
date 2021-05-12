@@ -34,7 +34,7 @@
           {% endif %}
           <h4>Rifas</h4>
           {% if user.quota_set.all %}
-          {% for quota in user.quota_set.all %}
+            {% for quota in user.quota_set.all %}
             <a href="{% url 'raffles:detail-raffles' raffle_pk=quota.raffle.id %}" class="genric-btn {{ quota.get_btn }} small radius">
               Cota: {{ quota.number }} | {{ quota.get_status }}
             </a>

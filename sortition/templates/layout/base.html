@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'vendor/css/slick.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/css/nice-select.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/libs/datetimepicker/jquery.datetimepicker.min.css' %}">
 
     {% block post_css %}{% endblock %}
 </head>
@@ -61,6 +62,13 @@
     <!-- Jquery Plugins, main Jquery -->	
     <script src="{% static 'vendor/js/plugins.js' %}"></script>
     <script src="{% static 'vendor/js/main.js' %}"></script>
+
+    <!-- Datepicker -->
+    <script src="{% static 'vendor/libs/datetimepicker/jquery.datetimepicker.full.min.js' %}"></script>
+
+    <!-- MaskMoney -->
+    <script src="{% static 'vendor/js/jquery.maskMoney.min.js' %}"></script>
+
     {% block post_js %}{% endblock %}
 
 </body>
