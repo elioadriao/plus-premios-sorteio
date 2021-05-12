@@ -21,9 +21,7 @@ def login(request):
 def add_users(request):
     form = UserForm(request.POST or None, instance=User())
     if form.is_valid():
-        user = form.save(commit=False)
-        user.set_password("12345")
-        user.save()
+        user = form.save()
         auth_login(request, user)
         return redirect("index")
     return render(request, "account/add.html", context={"form": form})
