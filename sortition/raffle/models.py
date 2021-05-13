@@ -107,6 +107,16 @@ class Quota(models.Model):
         choices=QUOTA_STATUS,
         default="open"
     )
+    reserved_at = models.DateTimeField(
+        verbose_name="Reservado em",
+        blank=True,
+        null=True
+    )
+    paid_at = models.DateTimeField(
+        verbose_name="Pago em",
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return "ID: %s Dono: %s Numero: %s" % (str(self.id), self.owner, str(self.number))

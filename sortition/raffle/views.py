@@ -2,6 +2,8 @@ from django.shortcuts import render, reverse, redirect, get_object_or_404
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from django.utils import timezone
+
 from django.core.paginator import Paginator
 
 from .models import Raffle, Quota
@@ -61,11 +63,10 @@ def detail_raffles(request, raffle_pk=None):
     if form.is_valid():
         form_quota = form.save(commit=False)
         quota = get_object_or_404(Quota.objects, raffle=raffle, number=form_quota.number)
-        if request.user.is_superuser and quota.status == "reserved":
-            quota.status = "paid"
-        else:
+        if quota.status == "open":
             quota.status = "reserved"
             quota.owner = request.user
+            quota.reserved_at = timezone.now()
         quota.save()
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
@@ -74,3 +75,29 @@ def detail_raffles(request, raffle_pk=None):
         request, "raffles/detail_raffles.html",
         context={"raffle": raffle, "form": form, "quotas": raffle.quota_set.all().order_by("number")}
     )
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def quota_payment(request, quota_pk=None):
+    quota = get_object_or_404(Quota.objects, pk=quota_pk)
+    if quota.status == "reserved":
+        quota.status = "paid"
+        quota.paid_at = timezone.now()
+        quota.save()
+
+    return redirect("account:detail-users")
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def quota_reset(request, quota_pk=None):
+    quota = get_object_or_404(Quota.objects, pk=quota_pk)
+    if quota.status == "reserved":
+        quota.status = "open"
+        quota.owner = None
+        quota.reserved_at = None
+        quota.paid_at = None
+        quota.save()
+
+    return redirect("account:detail-users")

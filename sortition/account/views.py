@@ -5,8 +5,12 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
+from django.core.paginator import Paginator
+
 from .models import User
 from .forms import UserForm
+
+from ..raffle.models import Quota
 
 
 def login(request):
@@ -36,5 +40,11 @@ def logout(request):
 @login_required
 def detail_users(request):
     user = get_object_or_404(User.objects, pk=request.user.id)
+    paginator = Paginator(Quota.objects.filter(status="reserved").order_by("-reserved_at"), 20)
 
-    return render(request, "account/detail.html", context={"user": user})
+    page_number = request.GET.get("page")
+    quotas_page_result = paginator.get_page(page_number)
+
+    return render(
+        request, "account/detail.html", context={"user": user, "quotas_page_result": quotas_page_result}
+    )

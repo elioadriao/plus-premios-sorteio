@@ -40,7 +40,11 @@
       <div class="col-lg-12 col-md-12 contact-form-area">
         <div class="contact-form-wrapper">
           {% for quota in quotas %}
-          <a href="#" class="genric-btn {{ quota.get_btn }} small radius open-modal" data-toggle="modal" data-target="#quotaModal" data-number={{ quota.number }} data-status={{ quota.status }}>
+          <a href="#" class="genric-btn {{ quota.get_btn }} small radius open-modal" data-toggle="modal"
+           data-target="#quotaModal" data-number={{ quota.number }} data-status={{ quota.status }}
+           {% if quota.owner %}data-owner={{ quota.owner }}{% endif %} {% if quota.reserved_at %}
+           data-reservedat="{{ quota.reserved_at|date:"d/m/Y" }} às {{ quota.reserved_at|date:"H:i" }}"{% endif %}
+           {% if quota.paid_at %}data-paidat="{{ quota.paid_at|date:"d/m/Y" }} às {{ quota.paid_at|date:"H:i" }}"{% endif %}>
             Cota: {{ quota.number }} | {{ quota.get_status }}
           </a>
           {% endfor %}
@@ -50,8 +54,7 @@
   </div>
 </div>
 <!-- About Area End -->
-<div class="modal fade modal-filter" id="quotaModal" tabindex="-1" role="dialog" aria-labelledby="quotaModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="quotaModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -61,7 +64,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <h3>Valor Da Cota {{ raffle.quota_value }}</h3>
+        <h3>Valor da Cota {{ raffle.quota_value }}</h3>
+        <h4 id="quota_owner" class="ml-2"></h4>
+        <h4 id="reserved_at" class="ml-2"></h4>
+        <h4 id="paid_at" class="ml-2"></h4>
         <form class="modal-form" method="post">
           {% csrf_token %}
           {{ form.as_p }}
@@ -78,20 +84,27 @@
   $(document).on("click", ".open-modal", function () {
     var quotaNumber = $(this).data("number");
     var quotaStatus = $(this).data("status");
+    var quotaOwner = $(this).data("owner");
+    var reservedAt = $(this).data("reservedat");
+    var paidAt = $(this).data("paidat");
     $("#id_number").val( quotaNumber );
 
-    if (quotaStatus == "paid") {
+    if (quotaStatus != "open") {
       $("#btn_submit").prop("hidden", true);
       $("#quotaModalLabel").text("Cota " + quotaNumber);
-    }else{
-      $("#btn_submit").prop("hidden", false);
-      if (quotaStatus == "open") {
-        $("#btn_submit").text("Reservar");
-        $("#quotaModalLabel").text("Reservar Cota " + quotaNumber);
-      }else {
-        $("#btn_submit").text("Confirmar Pagamento");
-        $("#quotaModalLabel").text("Confirmar Pagamento Cota " + quotaNumber);
+      $("#quota_owner").text("Dono da Cota " + quotaOwner);
+      $("#reserved_at").text("Reservado em " + reservedAt);
+      if (paidAt){
+        $("#paid_at").text("Pago em " + paidAt);
+      } else {
+        $("#paid_at").text("Pagamento em Analise");
       }
+    } else {
+      $("#btn_submit").prop("hidden", false);
+      $("#quotaModalLabel").text("Reservar Cota " + quotaNumber);
+      $("#quota_owner").text("");
+      $("#reserved_at").text("");
+      $("#paid_at").text("");
     }
   });
 </script>
