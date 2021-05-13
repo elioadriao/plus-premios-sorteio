@@ -2,6 +2,8 @@ from django import forms
 
 from .models import Address, User
 
+from ..raffle.models import Quota
+
 
 class UserForm(forms.ModelForm):
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput)

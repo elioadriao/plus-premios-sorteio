@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Autenticação{% endblock %}
+{% block title %}Painel{% endblock %}
 
 {% block content %}
 <!--? contact-form start -->
@@ -11,6 +11,83 @@
     <div class="row justify-content-center">
       <!-- Contact wrapper -->
       <div class="col-xl-8 col-lg-9">
+        {% if request.user.is_staff %}
+        <div class="contact-form-wrapper">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="section-tittle mb-50">
+                <h2>Painel de Administrador</h2>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>Resultado de Cotas Reservadas</h3>
+            {% if quotas_page_result %}
+            <table class="table table-hover">
+              <thead>
+                <th>Dono</th>
+                <th>Numero</th>
+                <th>Data de Reserva</th>
+                <th class="text-right">Pagamento</th>
+              </thead>
+              <tbody>
+                {% for quota in quotas_page_result %}
+                <tr>
+                  <td>{{ quota.owner }}</td>
+                  <td>{{ quota.number }}</td>
+                  <td>{{ quota.reserved_at|date:"d/m/Y" }} às {{ quota.reserved_at|date:"H:i" }}</td>
+                  <td class="text-right">
+                    <a href="{% url 'raffles:pay-quota' quota_pk=quota.id %}"
+                     class="genric-btn small success">Aprovar</a>
+                    <a href="{% url 'raffles:reset-quota' quota_pk=quota.id %}"
+                     class="genric-btn small danger">Negar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            {% if quotas_page_result.paginator.num_pages > 0 %}
+            <nav aria-label="Resultado da Busca de Usuários" class="mb-4">
+              <ul class="pagination justify-content-center">
+                {% if quotas_page_result.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1">
+                    &laquo; Primeira
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ quotas_page_result.previous_page_number }}">
+                    Anterior
+                  </a>
+                </li>
+                {% endif %}
+                <li class="page-item disabled">
+                  <span class="page-link">
+                    Página {{ quotas_page_result.number }} de {{ quotas_page_result.paginator.num_pages }}
+                  </span>
+                </li>
+                {% if quotas_page_result.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ quotas_page_result.next_page_number }}">
+                    Próximo
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ quotas_page_result.paginator.num_pages }}">
+                    Última &raquo;
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+            {% else %}
+            <h4>Nenhum Resultado encontrado</h4>
+            {% endif %}
+          </div>
+        </div>
+        {% else %}
         <div class="contact-form-wrapper">
           <!-- From tittle -->
           <div class="row">
@@ -45,6 +122,7 @@
           <h4>Prêmios Vencidos</h4>
           <h5 class="ml-4">Nenhum Premio Vencido.</h5>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
