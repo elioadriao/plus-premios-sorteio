@@ -58,16 +58,18 @@ def delete_raffles(request, raffle_pk=None):
 @login_required
 def detail_raffles(request, raffle_pk=None):
     raffle = get_object_or_404(Raffle.objects, pk=raffle_pk)
-    form = QuotaForm(request.POST or None)
+    form = QuotaForm(request.POST or None, raffle_pk=raffle.id)
 
     if form.is_valid():
-        form_quota = form.save(commit=False)
-        quota = get_object_or_404(Quota.objects, raffle=raffle, number=form_quota.number)
-        if quota.status == "open":
-            quota.status = "reserved"
-            quota.owner = request.user
-            quota.reserved_at = timezone.now()
-        quota.save()
+        if raffle.is_date_valid():
+            quotas = form.cleaned_data["quotas"]
+            for quota in quotas:
+                if quota.status == "open":
+                    quota.status = "reserved"
+                    quota.owner = request.user
+                    quota.reserved_at = timezone.now()
+                    #quota.save()
+            Quota.objects.bulk_update(quotas, ["status", "owner", "reserved_at"])
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 

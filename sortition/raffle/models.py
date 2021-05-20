@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils import timezone
+
 from ..account.models import User
 
 import os
@@ -72,6 +74,9 @@ class Raffle(models.Model):
         else:
             return None
 
+    def is_date_valid(self):
+        return self.date > timezone.now()
+
 
 class Quota(models.Model):
     class Meta:
@@ -119,7 +124,7 @@ class Quota(models.Model):
     )
 
     def __str__(self):
-        return "ID: %s Dono: %s Numero: %s" % (str(self.id), self.owner, str(self.number))
+        return "Cota %s" % (str(self.number))
 
     def get_status(self):
         return dict(self.QUOTA_STATUS).get(self.status)
