@@ -68,7 +68,6 @@ def detail_raffles(request, raffle_pk=None):
                     quota.status = "reserved"
                     quota.owner = request.user
                     quota.reserved_at = timezone.now()
-                    #quota.save()
             Quota.objects.bulk_update(quotas, ["status", "owner", "reserved_at"])
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
