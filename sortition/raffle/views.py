@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 
 from .models import Raffle, Quota
-from .forms import RaffleForm, QuotaForm
+from .forms import RaffleForm, QuotaForm, WinnerForm
 
 
 def list_raffles(request):
@@ -58,11 +58,12 @@ def delete_raffles(request, raffle_pk=None):
 @login_required
 def detail_raffles(request, raffle_pk=None):
     raffle = get_object_or_404(Raffle.objects, pk=raffle_pk)
-    form = QuotaForm(request.POST or None, raffle_pk=raffle.id)
+    quotas_result = raffle.quota_set.all().order_by("number")
+    quota_form = QuotaForm(request.POST or None, raffle_pk=raffle.id)
 
-    if form.is_valid():
+    if quota_form.is_valid():
         if raffle.is_date_valid():
-            quotas = form.cleaned_data["quotas"]
+            quotas = quota_form.cleaned_data["quotas"]
             for quota in quotas:
                 if quota.status == "open":
                     quota.status = "reserved"
@@ -71,10 +72,27 @@ def detail_raffles(request, raffle_pk=None):
             Quota.objects.bulk_update(quotas, ["status", "owner", "reserved_at"])
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
+    
+
+    winner_form = WinnerForm(request.POST or None)
+
+    if winner_form.is_valid():
+        winner_quota_id = winner_form.cleaned_data["winner_quota_id"]
+        sorted_quota = winner_form.cleaned_data["sorted_quota"]
+        quota = get_object_or_404(Quota.objects, pk=winner_quota_id)
+
+        raffle.winner = quota.owner
+        raffle.sorted_quota = sorted_quota
+        raffle.save()
+
+        return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 
     return render(
         request, "raffles/detail_raffles.html",
-        context={"raffle": raffle, "form": form, "quotas": raffle.quota_set.all().order_by("number")}
+        context={
+            "raffle": raffle, "quota_form": quota_form,
+            "winner_form": winner_form, "quotas_result": quotas_result
+        }
     )
 
 

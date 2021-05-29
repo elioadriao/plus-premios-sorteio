@@ -2,6 +2,8 @@ from django.db import models
 
 from django.utils import timezone
 
+from datetime import date, datetime
+
 from ..account.models import User
 
 import os
@@ -9,8 +11,8 @@ import os
 
 def get_upload_to(instance, filename):
     return os.path.join(
-        "rifa",
-        "%s_" % str(instance.date.strftime("%m/%d/%Y_%H:%M:%S")), filename
+        "rifas",
+        "%s.%s" % (str(datetime.now().timestamp()), filename.split('.')[-1])
     )
 
 
@@ -32,7 +34,7 @@ class Raffle(models.Model):
     )
     quotas = models.IntegerField(
         verbose_name="Número de Cotas",
-        default=1000
+        default=100
     )
     quota_value = models.CharField(
         verbose_name="Valor Unitário da Cota",
@@ -42,9 +44,18 @@ class Raffle(models.Model):
     date = models.DateTimeField(
         verbose_name="Data do Sorteio"
     )
-    winner = models.IntegerField(
+    winner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
         verbose_name="Vencedor",
-        default=0
+        related_name="winner_set",
+        null=True,
+        blank=True
+    )
+    sorted_quota = models.IntegerField(
+        verbose_name="Cota Sorteada",
+        null=True,
+        blank=True
     )
     image = models.ImageField(
         upload_to=get_upload_to,
@@ -56,6 +67,7 @@ class Raffle(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Criador",
+        related_name="created_by_set",
         null=True
     )
     created_at = models.DateTimeField(
@@ -67,12 +79,6 @@ class Raffle(models.Model):
         return "ID: %s Data: %s Cotas: %s" % (
             str(self.id), self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas)
         )
-
-    def get_winner(self):
-        if self.winner > 0:
-            return User.objects.get(id=self.winner)
-        else:
-            return None
 
     def is_date_valid(self):
         return self.date > timezone.now()
