@@ -11,7 +11,9 @@ from .forms import RaffleForm, QuotaForm, WinnerForm
 
 
 def list_raffles(request):
-    paginator = Paginator(Raffle.objects.all().order_by("-date"), 3)
+    raffles = Raffle.objects.all().order_by("-date")
+    paginator = Paginator(raffles, 3)
+    winners_result = raffles.exclude(winner__isnull=True)
 
     page_number = request.GET.get("page")
     raffles_page_result = paginator.get_page(page_number)
@@ -19,7 +21,10 @@ def list_raffles(request):
     return render(
         request,
         "raffles/list_raffles.html",
-        {"current_page": "raffles", "raffles_page_result": raffles_page_result},
+        {
+            "current_page": "raffles", "raffles_page_result": raffles_page_result,
+            "winners_result": winners_result
+        },
     )
 
 
@@ -72,7 +77,6 @@ def detail_raffles(request, raffle_pk=None):
             Quota.objects.bulk_update(quotas, ["status", "owner", "reserved_at"])
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
-    
 
     winner_form = WinnerForm(request.POST or None)
 

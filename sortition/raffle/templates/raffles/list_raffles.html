@@ -8,7 +8,7 @@
 
 <!--Team Ara Start -->
 <div class="team-area">
-  <div class="container">
+  <div class="container mb-25">
     <div class="row justify-content-center">
       <div class="cl-xl-7 col-lg-8 col-md-10">
         <!-- Section Tittle -->
@@ -16,90 +16,109 @@
           <h2>Plus Prêmios Sorteios</h2>
           {% if user.is_staff %}
           <a href="{% url 'raffles:add-raffles' %}" class="btn">
-            <i class="fas fa-user mr-2"></i>Adicionar Sorteio
+            <i class="fas fa-trophy mr-2"></i>Adicionar Sorteio
           </a>
           {% endif %}  
         </div>
-        
       </div>
     </div>
+    {% if raffles_page_result %}
     <div class="row">
-      {% for raffle in raffles_page_result%}
-        <div class="col-lg-4 col-md-4 col-sm-6">
-          <div class="single-team mb-30 text-center">
-            <div class="team-img">
-              {% if raffle.image %}
-              <img style="max-height: 300px; max-width: 300px;" src="{{ raffle.image.url }}" alt="">
-              {% else %}
-              <img style="max-height: 300px; max-width: 300px;" src="{% static 'vendor/img/empty.jpg' %}" alt="">
-              {% endif %}
+      {% for raffle in raffles_page_result %}
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="single-team mb-30 text-center">
+          <div class="team-img">
+            <img src="{{ raffle.get_image }}" alt="">
+            <a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">
               <div class="team-caption">
-                <h3><a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">{{ raffle.title }}</a></h3>
-                <h4>{{ raffle.date|date:"d/m/Y H:i" }}</h4>
+                <h3>{{ raffle.title }}</h3>
+                <h5 class="mt-2">Sorteio dia {{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</h5>
                 <p>Cotas: {{ raffle.quotas }}</p>
-                <!-- Blog Social -->
-                <div class="team-social">
-                  <ul>
-                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                    <li><a href="#"><i class="fa fa-share"></i></a></li>
-                    {% if request.user.is_superuser %}
-                    <li><a href="{% url 'raffles:delete-raffles' raffle_pk=raffle.id %}"><i class="fa fa-trash"></i></a></li>
-                    {% endif %}
-                  </ul>
-                </div>
+                <a href="{% url 'raffles:delete-raffles' raffle_pk=raffle.id %}"><i class="fa fa-trash"></i></a>
               </div>
-            </div>
+            </a>
           </div>
         </div>
+      </div>
       {% endfor %}
     </div>
-    {% if raffles_page_result.paginator.num_pages > 0 %}
-      <nav aria-label="Resultado da Busca de Veículos de Postagens" class="mb-4">
-        <ul class="pagination justify-content-center">
-
-          {% if raffles_page_result.has_previous %}
-
-          <li class="page-item">
-            <a class="page-link" href="?page=1">
-              &laquo; Primeira
-            </a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link" href="?page={{ raffles_page_result.previous_page_number }}">
-              Anterior
-            </a>
-          </li>
-
-          {% endif %}
-
-          <li class="page-item disabled">
-            <span class="page-link">
-              Página {{ raffles_page_result.number }} de {{ raffles_page_result.paginator.num_pages }}
-            </span>
-          </li>
-
-          {% if raffles_page_result.has_next %}
-
-          <li class="page-item">
-            <a class="page-link" href="?page={{ raffles_page_result.next_page_number }}">
-              Próximo
-            </a>
-          </li>
-
-          <li class="page-item">
-            <a class="page-link" href="?page={{ raffles_page_result.paginator.num_pages }}">
-              Última &raquo;
-            </a>
-          </li>
-
-          {% endif %}
-
-        </ul>
-      </nav>
-      {% endif %}
+    {% else %}
+      <h4 class="text-center">Nenhum Sorteio Encontrado.</h4>
+    {% endif %}
+    {% if raffles_page_result.paginator.num_pages > 1 %}
+    <nav aria-label="Resultado da Busca de Veículos de Postagens" class="mb-4">
+      <ul class="pagination justify-content-center">
+        {% if raffles_page_result.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">
+            &laquo; Primeira
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ raffles_page_result.previous_page_number }}">
+            Anterior
+          </a>
+        </li>
+        {% endif %}
+        <li class="page-item disabled">
+          <span class="page-link">
+            Página {{ raffles_page_result.number }} de {{ raffles_page_result.paginator.num_pages }}
+          </span>
+        </li>
+        {% if raffles_page_result.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ raffles_page_result.next_page_number }}">
+            Próximo
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ raffles_page_result.paginator.num_pages }}">
+            Última &raquo;
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+    <div class="row justify-content-center">
+      <div class="cl-xl-7 col-lg-8 col-md-10">
+        <!-- Section Tittle -->
+        <div class="section-tittle text-center mb-70">
+          <h2>Vencedores</h2> 
+        </div>
+      </div>
+    </div>
+    {% if winners_result %}
+    <div class="row">
+      <div class="owl-carousel owl-theme">
+        {% for raffle in winners_result %}
+        <div class="card">
+          <img class="card-img-top" src="{{ raffle.winner.get_profile }}" alt="Vencedor">
+          <div class="card-body">
+            <h5 class="card-title">{{ raffle.winner }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Cota Premiada: {{ raffle.sorted_quota }}</h6>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <h4 class="text-center">Nenhum Vencedor Encontrado.</h4>
+    {% endif %}
   </div>
 </div>
 <!-- Team Ara End -->
 
+{% endblock %}
+{% block post_js %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.owl-carousel').owlCarousel(
+      {
+        "autoWidth": true,
+        "margin": 5 
+      }
+    );
+  });
+</script>
 {% endblock %}

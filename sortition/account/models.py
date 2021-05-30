@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.conf import settings
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 import os
@@ -129,3 +131,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return self.name
+
+    def get_profile(self):
+        if self.profile:
+            return self.profile.url
+        else:
+            return "static/vendor/img/profile.png"
