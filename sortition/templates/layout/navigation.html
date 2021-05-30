@@ -67,6 +67,13 @@
                       <li><a href="#">Contato</a></li>
                       <li><hr></li>
                       {% if user.is_authenticated %}
+                      {% if user.is_staff %}
+                      <li>
+                        <a href="{% url 'raffles:add-raffles' %}" class="header-btn">
+                          <i class="fas fa-trophy mr-2"></i>Adicionar Sorteio
+                        </a>
+                      </li>
+                      {% endif %}
                       <li>
                         <a href="{% url 'account:detail-users' %}" class="header-btn">
                           <i class="fas fa-user mr-2"></i>Painel

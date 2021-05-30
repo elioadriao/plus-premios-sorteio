@@ -7,6 +7,20 @@
     margin: 5px 5px 0px 0px;
 }
 
+.owl-nav div {
+    border-radius: 20px !important;
+}
+
+.raffles-card img {
+    max-width: 400px;
+    max-height: 320px;
+}
+
+.winners-card img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
 /*body {
     background-image: url("../img/logo/logo-big.png");
     background-repeat: no-repeat;

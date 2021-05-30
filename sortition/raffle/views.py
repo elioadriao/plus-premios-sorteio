@@ -4,25 +4,19 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.utils import timezone
 
-from django.core.paginator import Paginator
-
 from .models import Raffle, Quota
 from .forms import RaffleForm, QuotaForm, WinnerForm
 
 
 def list_raffles(request):
-    raffles = Raffle.objects.all().order_by("-date")
-    paginator = Paginator(raffles, 3)
-    winners_result = raffles.exclude(winner__isnull=True)
-
-    page_number = request.GET.get("page")
-    raffles_page_result = paginator.get_page(page_number)
+    raffles_result = Raffle.objects.all().order_by("-date")
+    winners_result = raffles_result.exclude(winner__isnull=True)
 
     return render(
         request,
         "raffles/list_raffles.html",
         {
-            "current_page": "raffles", "raffles_page_result": raffles_page_result,
+            "current_page": "raffles", "raffles_result": raffles_result,
             "winners_result": winners_result
         },
     )

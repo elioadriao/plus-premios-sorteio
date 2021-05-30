@@ -83,12 +83,6 @@ class Raffle(models.Model):
     def is_date_valid(self):
         return self.date > timezone.now()
 
-    def get_image(self):
-        if self.image:
-            return self.image.url
-        else:
-            return "static/vendor/img/empty.png"
-
 
 class Quota(models.Model):
     class Meta:
