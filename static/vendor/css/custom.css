@@ -21,6 +21,11 @@
     max-height: 200px;
 }
 
+.raffle-detail-card img {
+    max-width: 100%;
+    max-height: 400px;
+}
+
 /*body {
     background-image: url("../img/logo/logo-big.png");
     background-repeat: no-repeat;
