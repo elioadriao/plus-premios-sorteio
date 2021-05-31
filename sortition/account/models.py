@@ -1,7 +1,5 @@
 from django.db import models
 
-from django.conf import settings
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 import os
@@ -65,7 +63,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    USERNAME_FIELD = 'phone'
+    USERNAME_FIELD = 'whatsapp'
     REQUIRED_FIELDS = ['name']
 
     class Meta:
@@ -76,22 +74,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name="Nome",
         max_length=255,
     )
-    email = models.CharField(
-        verbose_name="Email",
-        max_length=255,
-    )
-    phone = models.CharField(
-        verbose_name="Telefone",
-        max_length=11,
-        unique=True
-    )
-    is_whatsapp = models.BooleanField(
-        verbose_name="Telefone é Whatsapp?",
-        default=True
-    )
     whatsapp = models.CharField(
         verbose_name="Whatsapp",
         max_length=11,
+        unique=True
+    )
+    email = models.CharField(
+        verbose_name="Email",
+        max_length=255,
         blank=True,
         null=True
     )
@@ -105,8 +95,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile = models.ImageField(
         upload_to=get_upload_to,
         verbose_name="Imagem de Perfil",
-        null=True,
-        blank=True
+        blank=True,
+        null=True
     )
     is_superuser = models.BooleanField(
         verbose_name="Administrador",
@@ -131,9 +121,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return self.name
-
-    def get_profile(self):
-        if self.profile:
-            return self.profile.url
-        else:
-            return "static/vendor/img/profile.png"

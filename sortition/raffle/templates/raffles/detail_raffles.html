@@ -67,7 +67,7 @@
            {% if quota.owner %}data-owner={{ quota.owner }}{% endif %} {% if quota.reserved_at %}
            data-reservedat="{{ quota.reserved_at|date:"d/m/Y" }} às {{ quota.reserved_at|date:"H:i" }}"{% endif %}
            {% if quota.paid_at %}data-paidat="{{ quota.paid_at|date:"d/m/Y" }} às {{ quota.paid_at|date:"H:i" }}"{% endif %}>
-            Cota: {{ quota.number }} | {{ quota.get_status }}
+            {{ quota.number }}
           </a>
           {% endfor %}
         </div>
@@ -80,7 +80,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title title-a">Valor Unitário da Cota {{ raffle.quota_value }}</h3>
+        <h3 class="modal-title">Valor Unitário da Cota {{ raffle.quota_value }}</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -88,6 +88,10 @@
       <div class="modal-body">
         <form method="post">
           {% csrf_token %}
+          <div class="form-group">
+            <label for="order_value">Valor total do Pedido: </label>
+            <input type="text" name="order_value" id="order_value" readonly>
+          </div>
           {% for quota_input in quota_form.quotas %}
           <div class="form-check form-check-inline">
             {{ quota_input }}

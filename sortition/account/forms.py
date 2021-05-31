@@ -2,8 +2,6 @@ from django import forms
 
 from .models import Address, User
 
-from ..raffle.models import Quota
-
 
 class UserForm(forms.ModelForm):
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput)
@@ -11,7 +9,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("name", "email", "phone")
+        fields = ("whatsapp", "name", "email", "profile")
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

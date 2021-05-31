@@ -2,8 +2,6 @@ from django.db import models
 
 from django.utils import timezone
 
-from datetime import datetime
-
 from ..account.models import User
 
 import os
@@ -12,7 +10,7 @@ import os
 def get_upload_to(instance, filename):
     return os.path.join(
         "rifas",
-        "%s.%s" % (str(datetime.now().timestamp()), filename.split('.')[-1])
+        "%s.%s" % (instance.date.strftime("%s"), filename.split(".")[-1])
     )
 
 
@@ -83,45 +81,43 @@ class Raffle(models.Model):
     def is_date_valid(self):
         return self.date > timezone.now()
 
+    def is_sorted(self):
+        return (self.winner and self.sorted_quota)
 
-class Quota(models.Model):
+    def get_quota_value(self):
+        return int(self.quota_value.split(",")[0][3:])
+
+
+class QuotaOrder(models.Model):
     class Meta:
-        verbose_name = "Cota"
-        verbose_name_plural = "Cotas"
+        verbose_name = "Reserva de Cota"
+        verbose_name_plural = "Reservas de Cotas"
 
-    QUOTA_STATUS = [
-        ("open", "Aberto"),
+    ORDER_STATUS = [
         ("reserved", "Reservado"),
         ("paid", "Pago")
     ]
 
-    raffle = models.ForeignKey(
-        Raffle,
-        on_delete=models.CASCADE,
-        verbose_name="Rifa",
-        null=True
-    )
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name="Dono",
-        blank=True,
         null=True
     )
-    number = models.IntegerField(
-        verbose_name="Numero",
-        default=0
+    value = models.CharField(
+        verbose_name="Valor da Reserva",
+        max_length=10,
+        default="R$ 100,00"
     )
     status = models.CharField(
         verbose_name="Status",
         max_length=8,
-        choices=QUOTA_STATUS,
-        default="open"
+        choices=ORDER_STATUS,
+        default="reserved"
     )
     reserved_at = models.DateTimeField(
         verbose_name="Reservado em",
-        blank=True,
-        null=True
+        auto_now=True
     )
     paid_at = models.DateTimeField(
         verbose_name="Pago em",
@@ -130,15 +126,48 @@ class Quota(models.Model):
     )
 
     def __str__(self):
-        return "Cota %s" % (str(self.number))
+        return "%s Valor: %s" % self.get_status(), self.value
 
     def get_status(self):
-        return dict(self.QUOTA_STATUS).get(self.status)
+        return dict(self.ORDER_STATUS).get(self.status)
+
+
+class Quota(models.Model):
+    class Meta:
+        verbose_name = "Cota"
+        verbose_name_plural = "Cotas"
+
+    raffle = models.ForeignKey(
+        Raffle,
+        on_delete=models.CASCADE,
+        verbose_name="Rifa",
+        null=True
+    )
+    order = models.ForeignKey(
+        QuotaOrder,
+        on_delete=models.CASCADE,
+        verbose_name="Reserva de Cota",
+        blank=True,
+        null=True
+    )
+    number = models.IntegerField(
+        verbose_name="Numero",
+        default=0
+    )
+
+    def __str__(self):
+        return str(self.number)
+
+    def get_status(self):
+        if self.order:
+            return self.order.get_status()
+        else:
+            return "open"
 
     def get_btn(self):
-        if self.status == "open":
+        if self.get_status() == "open":
             return "success"
-        elif self.status == "reserved":
+        elif self.get_status() == "reserved":
             return "warning"
         else:
             return "primary"
