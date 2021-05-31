@@ -92,25 +92,25 @@ def detail_raffles(request, raffle_pk=None):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def quota_payment(request, quota_pk=None):
-    quota = get_object_or_404(Quota.objects, pk=quota_pk)
-    if quota.status == "reserved":
-        quota.status = "paid"
-        quota.paid_at = timezone.now()
-        quota.save()
+def order_payment(request, order_pk=None):
+    order = get_object_or_404(QuotaOrder.objects, pk=order_pk)
+    if order.status == "reserved":
+        order.status = "paid"
+        order.paid_at = timezone.now()
+        order.save()
 
     return redirect("account:detail-users")
 
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def quota_reset(request, quota_pk=None):
-    quota = get_object_or_404(Quota.objects, pk=quota_pk)
-    if quota.status == "reserved":
-        quota.status = "open"
-        quota.owner = None
-        quota.reserved_at = None
-        quota.paid_at = None
-        quota.save()
+def order_reset(request, order_pk=None):
+    order = get_object_or_404(QuotaOrder.objects, pk=order_pk)
+    if order.status == "reserved":
+        order.status = "open"
+        order.owner = None
+        order.reserved_at = None
+        order.paid_at = None
+        order.save()
 
     return redirect("account:detail-users")

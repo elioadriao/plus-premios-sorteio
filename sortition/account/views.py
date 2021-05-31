@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from .models import User
 from .forms import UserForm
 
-from ..raffle.models import Quota
+from ..raffle.models import QuotaOrder
 
 
 def login(request):
@@ -40,11 +40,11 @@ def logout(request):
 @login_required
 def detail_users(request):
     user = get_object_or_404(User.objects, pk=request.user.id)
-    paginator = Paginator(Quota.objects.filter(status="reserved").order_by("-reserved_at"), 20)
+    paginator = Paginator(QuotaOrder.objects.filter(status="reserved").order_by("-reserved_at"), 20)
 
     page_number = request.GET.get("page")
-    quotas_page_result = paginator.get_page(page_number)
+    order_page_result = paginator.get_page(page_number)
 
     return render(
-        request, "account/detail.html", context={"user": user, "quotas_page_result": quotas_page_result}
+        request, "account/detail.html", context={"user": user, "order_page_result": order_page_result}
     )

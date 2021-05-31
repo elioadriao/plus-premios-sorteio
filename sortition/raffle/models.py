@@ -70,7 +70,7 @@ class Raffle(models.Model):
     )
     created_at = models.DateTimeField(
         verbose_name="Criado em",
-        auto_now=True
+        auto_now_add=True
     )
 
     def __str__(self):
@@ -117,7 +117,7 @@ class QuotaOrder(models.Model):
     )
     reserved_at = models.DateTimeField(
         verbose_name="Reservado em",
-        auto_now=True
+        auto_now_add=True
     )
     paid_at = models.DateTimeField(
         verbose_name="Pago em",
@@ -130,6 +130,9 @@ class QuotaOrder(models.Model):
 
     def get_status(self):
         return dict(self.ORDER_STATUS).get(self.status)
+
+    def get_quotas_numbers(self):
+        return self.quota_set.all().values_list("number", flat=True)[::1]
 
 
 class Quota(models.Model):

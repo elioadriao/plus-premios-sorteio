@@ -35,8 +35,8 @@ class WinnerForm(forms.Form):
         sorted_quota = data["sorted_quota"]
         try:
             quota = Quota.objects.get(raffle_id=self.raffle_pk, number=sorted_quota)
-            if quota.owner:
-                if quota.status == "paid":
+            if quota.order:
+                if quota.order.status == "paid":
                     data["winner_quota_id"] = quota.id
                 else:
                     raise ValidationError("Cota não possui pagamento registrado.")

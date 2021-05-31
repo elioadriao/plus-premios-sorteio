@@ -30,20 +30,22 @@
               {% if raffle.is_date_valid %}
               <a href="#" class="btn radius" data-toggle="modal" data-target="#quotaBuyModal">Comprar Cotas</a>
               {% else %}
-              <form method="post" class="form-inline">
-                {% csrf_token %}
-                <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
-                <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
-  
-                <button class="btn radius" type="submit">Selecionar Vencedor</button>
-                {% if winner_form.non_field_errors %}
-                  {% for error in winner_form.non_field_errors %}
-                    <div class="alert alert-danger">
-                      <strong>{{ error }}</strong>
-                    </div>
-                  {% endfor %}
+                {% if request.user.is_staff %}
+                <form method="post" class="form-inline">
+                  {% csrf_token %}
+                  <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
+                  <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
+    
+                  <button class="btn radius" type="submit">Selecionar Vencedor</button>
+                  {% if winner_form.non_field_errors %}
+                    {% for error in winner_form.non_field_errors %}
+                      <div class="alert alert-danger">
+                        <strong>{{ error }}</strong>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                </form>
                 {% endif %}
-              </form>
               {% endif %}
             {% endif %}
           </div>
@@ -62,9 +64,9 @@
         <div class="card quotas-card">
           {% for quota in quotas_result %}
           <a href="#" class="genric-btn {{ quota.get_btn }} quota-btn" data-toggle="modal"
-           data-target="#quotaShowModal" data-number={{ quota.number }} data-status={{ quota.order.status }}
-           data-owner={{ quota.order.owner }} data-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
-           data-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}"">
+           data-target="#quotaShowModal" data-number="{{ quota.number }}" data-status="{{ quota.order.status }}"
+           data-owner="{{ quota.order.owner }}" data-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
+           data-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}">
             {{ quota.number }}
           </a>
           {% endfor %}

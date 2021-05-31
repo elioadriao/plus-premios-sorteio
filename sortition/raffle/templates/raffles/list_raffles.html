@@ -42,7 +42,12 @@
     <div class="owl-carousel owl-theme" id="winnersCarousel">
       {% for raffle in winners_result %}
       <div class="card winners-card">
-        <img class="card-img-top" src="{{ raffle.winner.get_profile }}" alt="Vencedor">
+        {% if raffle.winner.profile %}
+        <img class="card-img-top" src="{{ raffle.winner.profile.url }}" alt="Vencedor">
+        {% else %}
+        <img class="card-img-top" src="{% static 'vendor/img/profile.png' %}" alt="Vencedor">
+        {% endif %}
+        
         <div class="card-body">
           <h5 class="card-title">{{ raffle.winner }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">Cota Premiada: {{ raffle.sorted_quota }}</h6>
