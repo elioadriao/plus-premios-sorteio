@@ -126,7 +126,7 @@ class QuotaOrder(models.Model):
     )
 
     def __str__(self):
-        return "%s Valor: %s" % self.get_status(), self.value
+        return "%s Valor: %s" % (self.get_status(), self.value)
 
     def get_status(self):
         return dict(self.ORDER_STATUS).get(self.status)
@@ -162,12 +162,13 @@ class Quota(models.Model):
         if self.order:
             return self.order.get_status()
         else:
-            return "open"
+            return "Aberto"
 
     def get_btn(self):
-        if self.get_status() == "open":
-            return "success"
-        elif self.get_status() == "reserved":
-            return "warning"
+        if self.order:
+            if self.get_status() == "Reservado":
+                return "warning"
+            else:
+                return "primary"
         else:
-            return "primary"
+            return "success"

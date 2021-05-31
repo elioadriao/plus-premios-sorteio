@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.utils import timezone
 
-from .models import Raffle, Quota
+from .models import Raffle, Quota, QuotaOrder
 from .forms import RaffleForm, QuotaForm, WinnerForm
 
 
@@ -57,30 +57,26 @@ def delete_raffles(request, raffle_pk=None):
 @login_required
 def detail_raffles(request, raffle_pk=None):
     raffle = get_object_or_404(Raffle.objects, pk=raffle_pk)
-    quotas_result = raffle.quota_set.all().order_by("number")
     quota_form = QuotaForm(request.POST or None, raffle_pk=raffle.id)
 
     if quota_form.is_valid():
         if raffle.is_date_valid():
             quotas = quota_form.cleaned_data["quotas"]
+            order_value = len(quotas) * raffle.get_quota_value()
+            order = QuotaOrder.objects.create(owner=request.user, value=order_value)
             for quota in quotas:
-                if quota.status == "open":
-                    quota.status = "reserved"
-                    quota.owner = request.user
-                    quota.reserved_at = timezone.now()
-            Quota.objects.bulk_update(quotas, ["status", "owner", "reserved_at"])
+                if not quota.order:
+                    quota.order = order
+            Quota.objects.bulk_update(quotas, ["order"])
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 
-    winner_form = WinnerForm(request.POST or None)
+    winner_form = WinnerForm(request.POST or None, raffle_pk=raffle.id)
 
     if winner_form.is_valid():
-        winner_quota_id = winner_form.cleaned_data["winner_quota_id"]
-        sorted_quota = winner_form.cleaned_data["sorted_quota"]
-        quota = get_object_or_404(Quota.objects, pk=winner_quota_id)
-
-        raffle.winner = quota.owner
-        raffle.sorted_quota = sorted_quota
+        quota = get_object_or_404(Quota.objects, pk=winner_form.cleaned_data["winner_quota_id"])
+        raffle.winner = quota.order.owner
+        raffle.sorted_quota = quota.number
         raffle.save()
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
@@ -89,7 +85,7 @@ def detail_raffles(request, raffle_pk=None):
         request, "raffles/detail_raffles.html",
         context={
             "raffle": raffle, "quota_form": quota_form,
-            "winner_form": winner_form, "quotas_result": quotas_result
+            "winner_form": winner_form, "quotas_result": raffle.quota_set.all().order_by("number")
         }
     )
 

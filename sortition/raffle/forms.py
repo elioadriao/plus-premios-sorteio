@@ -19,20 +19,22 @@ class QuotaForm(forms.Form):
     def __init__(self, *args, **kwargs):
         raffle_pk = kwargs.pop("raffle_pk", None)
         super().__init__(*args, **kwargs)
-        self.fields["quotas"].queryset = Quota.objects.filter(status="open", raffle_id=raffle_pk)
+        self.fields["quotas"].queryset = Quota.objects.filter(order__isnull=True, raffle_id=raffle_pk)
 
 
 class WinnerForm(forms.Form):
-    raffle_id = forms.CharField(required=False)
     winner_quota_id = forms.CharField(required=False)
     sorted_quota = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.raffle_pk = kwargs.pop("raffle_pk", None)
+        super().__init__(*args, **kwargs)
 
     def clean(self):
         data = self.cleaned_data
         sorted_quota = data["sorted_quota"]
-        raffle_id = data["raffle_id"]
         try:
-            quota = Quota.objects.get(raffle_id=raffle_id, number=sorted_quota)
+            quota = Quota.objects.get(raffle_id=self.raffle_pk, number=sorted_quota)
             if quota.owner:
                 if quota.status == "paid":
                     data["winner_quota_id"] = quota.id

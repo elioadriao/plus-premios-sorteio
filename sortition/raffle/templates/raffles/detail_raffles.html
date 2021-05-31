@@ -32,7 +32,6 @@
               {% else %}
               <form method="post" class="form-inline">
                 {% csrf_token %}
-                <input type="hidden" id="id_raffle_id" name="raffle_id" value={{ raffle.id }}>
                 <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
                 <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
   
@@ -62,11 +61,10 @@
       <div class="col-lg-12 col-md-12">
         <div class="card quotas-card">
           {% for quota in quotas_result %}
-          <a href="#" class="genric-btn {{ quota.get_btn }} small radius open-modal" data-toggle="modal"
-           data-target="#quotaShowModal" data-number={{ quota.number }} data-status={{ quota.status }}
-           {% if quota.owner %}data-owner={{ quota.owner }}{% endif %} {% if quota.reserved_at %}
-           data-reservedat="{{ quota.reserved_at|date:"d/m/Y" }} às {{ quota.reserved_at|date:"H:i" }}"{% endif %}
-           {% if quota.paid_at %}data-paidat="{{ quota.paid_at|date:"d/m/Y" }} às {{ quota.paid_at|date:"H:i" }}"{% endif %}>
+          <a href="#" class="genric-btn {{ quota.get_btn }} quota-btn" data-toggle="modal"
+           data-target="#quotaShowModal" data-number={{ quota.number }} data-status={{ quota.order.status }}
+           data-owner={{ quota.order.owner }} data-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
+           data-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}"">
             {{ quota.number }}
           </a>
           {% endfor %}
@@ -86,19 +84,19 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="post">
+        <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
+        <form method="post" class="text-center">
           {% csrf_token %}
-          <div class="form-group">
-            <label for="order_value">Valor total do Pedido: </label>
-            <input type="text" name="order_value" id="order_value" readonly>
-          </div>
           {% for quota_input in quota_form.quotas %}
-          <div class="form-check form-check-inline">
+          <div class="form-check-inline">
             {{ quota_input }}
           </div>
           {% endfor %}
           <button class="btn radius btn-block mt-2" type="submit">Reservar</button>
         </form>
+      </div>
+      <div class="modal-footer">
+        <h3 class="modal-title text-center" id="order_value_text">Valor total da Reserva: R$ 0,00</h3>
       </div>
     </div>
   </div>
@@ -108,7 +106,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title title-a">Detalhes da Cota</h3>
+        <h3 class="modal-title" id="quota_title">Detalhes da Cota</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -125,27 +123,40 @@
 {% endblock %}
 {% block post_js %}
 <script type="text/javascript">
-  $(document).on("click", ".open-modal", function () {
+  $(document).on("click", ".quota-btn", function () {
     var quotaNumber = $(this).data("number");
-    var quotaStatus = $(this).data("status");
     var quotaOwner = $(this).data("owner");
+    var quotaStatus = $(this).data("status");
     var reservedAt = $(this).data("reservedat");
     var paidAt = $(this).data("paidat");
-    $("#id_number").val( quotaNumber );
 
-    if (quotaStatus != "open") {
-      $("#quota_owner").text("Dono da Cota " + quotaOwner);
-      $("#reserved_at").text("Reservado em " + reservedAt);
+    $("#quota_title").text("Detalhes da Cota " + quotaNumber);
+    if (quotaOwner) {
+      $("#quota_owner").text("Dono da Cota: " + quotaOwner);
+      $("#reserved_at").text("Reservado em: " + reservedAt);
       if (paidAt){
-        $("#paid_at").text("Pago em " + paidAt);
+        $("#paid_at").text("Pago em: " + paidAt);
       } else {
         $("#paid_at").text("Pagamento em Analise");
       }
     } else {
-      $("#quota_owner").text("");
+      $("#quota_owner").text("Cota sem Dono");
       $("#reserved_at").text("");
       $("#paid_at").text("");
     }
   });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("input:checkbox").click(function() {
+      $("input:checkbox:checked").parent().css("background-color", "#f4e700");
+      $("input:checkbox:unchecked").parent().css("background-color", "#4cd3e3");
+
+      var total_value = $("input:checkbox:checked").length * $("#quota_value").text();
+      $("#order_value_text").text("Valor total da Reserva: R$ "+ total_value +",00");
+      $("#order_value").val(total_value);
+
+    });
+});
 </script>
 {% endblock %}

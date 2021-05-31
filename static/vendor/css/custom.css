@@ -1,10 +1,19 @@
-.form-check-inline {
+.form-check-inline input {
+    display: none;
+}
+
+.form-check-inline label{
+    line-height: 40px;
     color: #fff;
     background: #4cd3e3;
     border: 1px solid transparent;
-    border-radius: 3px !important;
-    padding: 0px 5px 0px 5px;
-    margin: 5px 5px 0px 0px;
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+    border-radius: 20px !important;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .owl-nav div {
@@ -24,6 +33,23 @@
 .raffle-detail-card img {
     max-width: 100%;
     max-height: 400px;
+}
+
+.quotas-card {
+    text-align: center;
+    display: block;
+    padding: 20px 0px;
+}
+
+.quota-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    font-size: 30px;
+    line-height: 60px;
+    padding: 0px;
+    font-weight: bold;
+    margin: 2px;
 }
 
 /*body {
