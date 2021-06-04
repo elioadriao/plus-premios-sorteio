@@ -6,6 +6,11 @@ from django.core.exceptions import ValidationError
 
 
 class RaffleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(RaffleForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
     class Meta:
         model = Raffle
         fields = ("title", "description", "quotas", "quota_value", "date", "image")
