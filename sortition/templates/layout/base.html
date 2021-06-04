@@ -11,22 +11,22 @@
     <link href="{% static 'vendor/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- CSS Here-->
     <link rel="stylesheet" href="{% static 'vendor/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/carousel.css' %}">
     <!-- Datetimepicker -->
     <link rel="stylesheet" href="{% static 'vendor/css/jquery.datetimepicker.min.css' %}">
     <!-- Font Awessome -->
     <link rel="stylesheet" href="{% static 'vendor/libs/fontawesome-free-5.15.3-web/css/all.css' %}">
 
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
+        }
+      }
+      @media (min-width: 992px){
+        body, .navbar .container-fluid {
+          max-width: 992px;
+          margin: 0 auto;
         }
       }
     </style>
