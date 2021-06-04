@@ -40,7 +40,7 @@ def logout(request):
 @login_required
 def detail_users(request):
     user = get_object_or_404(User.objects, pk=request.user.id)
-    paginator = Paginator(QuotaOrder.objects.filter(status="reserved").order_by("-reserved_at"), 20)
+    paginator = Paginator(QuotaOrder.objects.filter(status="reserved").order_by("-reserved_at"), 10)
 
     page_number = request.GET.get("page")
     order_page_result = paginator.get_page(page_number)

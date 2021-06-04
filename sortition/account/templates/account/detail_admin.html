@@ -1,0 +1,71 @@
+<div class="px-4 my-5 text-center border-bottom">
+  <h1 class="display-4 fw-bold">Painel de Administrador</h1>
+</div>
+<div class="container">
+  <h1 class="h3 mb-3 fw-normal">Confirmar Pagamento</h1>
+  <table class="table table-hover">
+    <thead>
+      <th>Dono</th>
+      <th>Reservado em</th>
+      <th>Cotas</th>
+      <th class="text-right">Pagamento</th>
+    </thead>
+    <tbody>
+      {% if order_page_result %}
+        {% for order in order_page_result %}
+        <tr>
+          <td>{{ order.owner }}</td>
+          <td>{{ order.reserved_at|date:"d/m/Y" }} às {{ order.reserved_at|date:"H:i" }}</td>
+          <td>{{ order.get_quotas_numbers }}</td>
+          <td class="text-right">
+            <a href="{% url 'raffles:pay-order' order_pk=order.id %}"
+              class="btn btn-success"><i class="fa fa-thumbs-up"></i></a>
+            <a href="{% url 'raffles:reset-order' order_pk=order.id %}"
+              class="btn btn-danger"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr>
+        <td colspan="4">Nenhum Resultado encontrado</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  {% if order_page_result.paginator.num_pages > 1 %}
+  <nav aria-label="Resultado da Busca de Usuários" class="mb-4">
+    <ul class="pagination justify-content-center">
+      {% if order_page_result.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1">
+          &laquo; Primeira
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ order_page_result.previous_page_number }}">
+          Anterior
+        </a>
+      </li>
+      {% endif %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          Página {{ order_page_result.number }} de {{ order_page_result.paginator.num_pages }}
+        </span>
+      </li>
+      {% if order_page_result.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ order_page_result.next_page_number }}">
+          Próximo
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ order_page_result.paginator.num_pages }}">
+          Última &raquo;
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>

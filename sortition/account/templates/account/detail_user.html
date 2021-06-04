@@ -1,0 +1,39 @@
+{% load static %}
+
+<div class="px-4 my-5 text-center border-bottom">
+<h1 class="display-4 fw-bold">Painel de Usuário</h1>
+</div>
+<div class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-4">
+      {% if user.profile %}
+      <img src="{{ raffle.profile.url }}" alt="" style="max-height: 16rem; max-width: 16rem;">
+      {% else %}
+      <img src="{% static 'vendor/img/profile.png' %}" alt="">
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Informações Pessoais</h5>
+        <p class="card-text">Nome: {{ user.name }}</p>
+        <p class="card-text">Whatsapp: {{ user.whatsapp }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Suas Cotas:</h5>
+    {% if user.quotaorder_set.all %}
+      {% for order in user.quotaorder_set.all %}
+        {% for quota in order.quota_set.all %}
+        <a href="{% url 'raffles:detail-raffles' raffle_pk=quota.raffle.id %}" class="btn btn-{{ quota.get_btn }}">
+          {{ quota.number }}
+        </a>
+        {% endfor %}
+      {% endfor %}
+    {% else %}
+    <p class="card-text text-muted">Não Possui Cotas</p>
+    {% endif %}
+  </div>
+</div>
