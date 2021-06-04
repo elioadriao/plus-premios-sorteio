@@ -2,41 +2,20 @@
 
 {% load static %}
 
-{% block title %}Cadastrar Usuario{% endblock %}
+{% block title %}Cadastrar Usuário{% endblock %}
 
 {% block content %}
 
-<!--? contact-form start -->
-<section class="contact-form-area">
-  <div class="container">
-    <div class="row justify-content-center">
-      <!-- Contact wrapper -->
-      <div class="col-xl-8 col-lg-9">
-        <div class="contact-form-wrapper">
-          <!-- From tittle -->
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- Section Tittle -->
-              <div class="section-tittle mb-50">
-                <h2>Cadastrar Usuario</h2>
-              </div>
-            </div>
-          </div>
-          <!-- form -->
-          <form method="POST" class="contact-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="row ">
-              <!-- Button -->
-              <div class="col-lg-12">
-                <button name="submit" class="submit-btn">Cadastrar</button>
-              </div>
-            </div>
-          </form>	
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- contact-form end -->
+<div class="px-4 my-5 text-center border-bottom">
+  <h1 class="display-4 fw-bold">Cadastro de Usuário</h1>
+</div>
+<div class="container">
+  <form method="POST" enctype="multipart/form-data" class="d-grid gap-2">
+    <h1 class="h3 mb-3 fw-normal">Informe os Dados do Usuário</h1>
+    {% csrf_token %}
+    {{ form }}
+    <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Cadastrar</button>
+  </form>
+</div>
+
 {% endblock %}

@@ -10,7 +10,7 @@
   <h1 class="display-4 fw-bold">Cadastro de Sorteio</h1>
 </div>
 <div class="container">
-  <form method="POST" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data" class="d-grid gap-2">
     <h1 class="h3 mb-3 fw-normal">Informe os Dados do Sorteio</h1>
     {% csrf_token %}
     {{ form }}

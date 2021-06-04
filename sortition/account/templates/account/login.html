@@ -6,38 +6,27 @@
 
 {% block content %}
 
-<!--? contact-form start -->
-<section class="contact-form-area">
-  <div class="container">
-    <div class="row justify-content-center">
-      <!-- Contact wrapper -->
-      <div class="col-xl-8 col-lg-9">
-        <div class="contact-form-wrapper">
-          <!-- From tittle -->
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- Section Tittle -->
-              <div class="section-tittle mb-50">
-                <h2>Login</h2>
-                <p>Brook presents your services with flexible, convenient and cdpose layouts. You can select your favorite layouts & elements for.</p>
-              </div>
-            </div>
-          </div>
-          <!-- form -->
-          <form method="POST" class="contact-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="row ">
-              <!-- Button -->
-              <div class="col-lg-12">
-                <button name="submit" class="submit-btn">Entrar</button>
-              </div>
-            </div>
-          </form>	
-        </div>
-      </div>
+<div class="container mt-5 text-center">
+  <form method="POST" enctype="multipart/form-data" style="max-width: 30rem; margin: 0 auto;">
+    <img class="mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
+    <h1 class="h3 mb-3 fw-normal">Informe Seus Dados</h1>
+    {% csrf_token %}
+    <div class="form-floating">
+      <input type="text" class="form-control" id="id_username" name="username" placeholder="Informe seu Whatsapp">
+      <label for="id_username">Whatsapp</label>
     </div>
-  </div>
-</section>
-<!-- contact-form end -->
+    <div class="form-floating">
+      <input type="password" class="form-control" id="id_password" name="password" placeholder="Senha">
+      <label for="id_password">Senha</label>
+    </div>
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-danger my-2">
+          <strong>{{ error }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <button class="w-100 btn btn-lg btn-success mt-3" type="submit">Entrar</button>
+  </form>
+</div>
 {% endblock %}
