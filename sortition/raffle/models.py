@@ -87,6 +87,11 @@ class Raffle(models.Model):
     def get_quota_value(self):
         return int(self.quota_value.split(",")[0][3:])
 
+    def dump_orders(self):
+        for order in QuotaOrder.objects.all():
+            if order.get_raffle().id == self.id:
+                order.delete()
+
 
 class QuotaOrder(models.Model):
     class Meta:
@@ -133,6 +138,9 @@ class QuotaOrder(models.Model):
 
     def get_quotas_numbers(self):
         return self.quota_set.all().values_list("number", flat=True)[::1]
+
+    def get_raffle(self):
+        return self.quota_set.first().raffle
 
 
 class Quota(models.Model):

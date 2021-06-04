@@ -7,7 +7,7 @@
   <div class="row g-0">
     <div class="col-md-4">
       {% if user.profile %}
-      <img src="{{ raffle.profile.url }}" alt="" style="max-height: 16rem; max-width: 16rem;">
+      <img src="{{ user.profile.url }}" alt="" style="max-height: 16rem; max-width: 16rem;">
       {% else %}
       <img src="{% static 'vendor/img/profile.png' %}" alt="">
       {% endif %}

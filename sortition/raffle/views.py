@@ -77,6 +77,7 @@ def detail_raffles(request, raffle_pk=None):
         quota = get_object_or_404(Quota.objects, pk=winner_form.cleaned_data["winner_quota_id"])
         raffle.winner = quota.order.owner
         raffle.sorted_quota = quota.number
+        raffle.dump_orders()
         raffle.save()
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
