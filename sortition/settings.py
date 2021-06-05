@@ -21,6 +21,11 @@ DEBUG = config(
     default=True
 )
 
+WHATSAPP_LINK = config(
+    "RAFFLE_WHATSAPP_LINK",
+    default="https://api.whatsapp.com/send?phone=558281196143&text=Pagamento%20no%20Valor%20R$%20{},00"
+)
+
 ALLOWED_HOSTS = config(
     "RAFFLE_ALLOWED_HOSTS",
     default="*",

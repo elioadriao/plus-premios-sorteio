@@ -1,0 +1,55 @@
+{% extends "layout/navigation.html" %}
+
+{% load static %}
+
+{% block title %}Link para Confirmação de Pagamento{% endblock %}
+
+{% block content %}
+
+<div class="px-4 my-5 text-center border-bottom">
+  <h1 class="display-4 fw-bold">Link para Confirmação de Pagamento</h1>
+</div>
+
+<div class="row">
+  <div class="container">
+    <div class="card text-center">
+      <div class="card-body">
+        <a href="{{ order.get_payment_link }}" target="_blank">
+          <img class="mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
+          <h1 class="h3 mb-3 fw-normal">Siga o Link para confirmar seu pagamento no valor de R$ {{ order.value }},00</h1>
+        </a>
+        <div class="grid">
+          <a href="{% url 'raffles:detail-raffles' raffle_pk=order.get_raffle.id %}" class="btn btn-info"> Voltar Para Sorteio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="px-4 my-5 text-center border-bottom">
+  <h1 class="display-4 fw-bold">Formas de Pagamento</h1>
+</div>
+<div class="row g-2">
+  <div class="container d-grid">
+    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment0">
+      Pix CPF
+    </a>
+    <div class="collapse" id="payment0">
+      <div class="card card-body">
+        Transferencia PIX <br>CPF: 000.000.000-00
+      </div>
+    </div>
+  </div>
+  <div class="container d-grid">
+    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment1">
+      Transferencia Banco
+    </a>
+    <div class="collapse" id="payment1">
+      <div class="card card-body">
+        Transferencia Banco <br>CC: 000000-0 <br>AG: 0000000-0
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

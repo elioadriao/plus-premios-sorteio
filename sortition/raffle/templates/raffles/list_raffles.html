@@ -9,7 +9,7 @@
   <h1 class="display-4 fw-bold">Sorteios Disponiveis</h1>
 </div>
 <div id="rafflesCarousel" class="carousel slide">  
-  <div class="carousel-inner">
+  <div class="carousel-inner shadow">
     {% if raffles_result %}
       {% for raffle in raffles_result %}
       <div class="carousel-item">
@@ -54,7 +54,7 @@
   <h1 class="display-4 fw-bold">Ganhadores</h1>
 </div>
 <div id="winnersCarousel" class="carousel slide">  
-  <div class="carousel-inner">
+  <div class="carousel-inner shadow">
     {% if winners_result %}
       {% for raffle in winners_result %}
       <div class="carousel-item">

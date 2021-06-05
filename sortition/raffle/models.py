@@ -2,6 +2,8 @@ from django.db import models
 
 from django.utils import timezone
 
+from django.conf import settings
+
 from ..account.models import User
 
 import os
@@ -91,6 +93,19 @@ class Raffle(models.Model):
         for order in QuotaOrder.objects.all():
             if order.get_raffle().id == self.id:
                 order.delete()
+        self.quota_set.all().delete()
+
+    def get_open_percent(self):
+        open_quotas_count = self.quota_set.filter(order__isnull=True).count()
+        return int((open_quotas_count * 100) / self.quotas)
+
+    def get_reserved_percent(self):
+        reserved_quotas_count = self.quota_set.filter(order__status="reserved").count()
+        return int((reserved_quotas_count * 100) / self.quotas)
+
+    def get_paid_percent(self):
+        paid_quotas_count = self.quota_set.filter(order__status="paid").count()
+        return int((paid_quotas_count * 100) / self.quotas)
 
 
 class QuotaOrder(models.Model):
@@ -142,6 +157,9 @@ class QuotaOrder(models.Model):
     def get_raffle(self):
         return self.quota_set.first().raffle
 
+    def get_payment_link(self):
+        return settings.WHATSAPP_LINK.format(self.value)
+
 
 class Quota(models.Model):
     class Meta:
@@ -180,6 +198,6 @@ class Quota(models.Model):
             if self.get_status() == "Reservado":
                 return "warning"
             else:
-                return "primary"
+                return "danger"
         else:
             return "success"

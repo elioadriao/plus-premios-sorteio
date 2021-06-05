@@ -8,71 +8,111 @@
 
 <div class="px-4 my-5 text-center border-bottom">
   <h1 class="display-4 fw-bold">Detalhes do Sorteio</h1>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-3 shadow">
+      {% if raffle.image %}
+      <img class="card-img-top" src="{{ raffle.image.url }}" alt="" style="max-height: 32rem; max-width: 32rem; margin: auto;">
+      {% else %}
+      <img class="card-img-top" src="{% static 'vendor/img/empty.png' %}" alt="" style="max-height: 32rem; max-width: 32rem; margin: auto;">
+      {% endif %}
+    </div>
   </div>
-  
-    <div class="row g-0">
-      <div class="col-md-6">
-        <div class="card mb-3">
-          {% if raffle.image.url %}
-          <img class="card-img-top" src="{{ raffle.image.url }}" alt="" style="max-height: 32rem; max-width: 32rem; margin: auto;">
-          {% else %}
-          <img class="card-img-top" src="{% static 'vendor/img/blank.png' %}" alt="" style="max-height: 32rem; max-width: 32rem; margin: auto;">
-          {% endif %}
-        </div>
+  <div class="col-md-6">
+    <div class="card mb-3 shadow" style="height: 97%;">
+      <div class="card-header">
+        <p class="h3">{{ raffle.title }}</p>
       </div>
-      <div class="col-md-6">
-        <div class="card mb-3" style="height: 97%;">
-          <div class="card-header">
-            <p class="h3">{{ raffle.title }}</p>
+      <div class="card-body">
+        <p class="card-text">Data do Sorteio: {{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</p>
+        <p class="card-text">Valor da Cota: {{ raffle.quota_value }}</p>
+        <hr>
+        {% if raffle.is_sorted %}
+        <p class="card-text">Vencedor: {{ raffle.winner }}</p>
+        <p class="card-text">Cota Sorteada: {{ raffle.sorted_quota }}</p>
+        {% else %}
+          <p class="card-text">Percentual das Cotas:</p>
+          <div class="progress bg-success" style="height: 2rem;">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ raffle.get_paid_percent }}%;">
+              {{ raffle.get_paid_percent }}%
+            </div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ raffle.get_reserved_percent }}%;">
+              {{ raffle.get_reserved_percent }}%
+            </div>
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ raffle.get_open_percent }}%;">
+              {{ raffle.get_open_percent }}%
+            </div>
           </div>
-          <div class="card-body">
-            <p class="card-text">{{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</p>
-            <p class="card-text">Valor Unitário da Cota {{ raffle.quota_value }}</p>
-            {% if raffle.is_sorted %}
-            <p class="card-text">Vencedor: {{ raffle.winner }}</p>
-            <p class="card-text">Cota Sorteada: {{ raffle.sorted_quota }}</p>
-            {% else %}
-              {% if raffle.is_date_valid %}
-              <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quotaBuyModal">Comprar Cotas</a>
-              {% elif request.user.is_staff %}
-              <form method="post" class="form-inline">
-                {% csrf_token %}
-                <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
-                <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
-                {% if winner_form.non_field_errors %}
-                  {% for error in winner_form.non_field_errors %}
-                    <div class="alert alert-danger">
-                      <strong>{{ error }}</strong>
-                    </div>
-                  {% endfor %}
-                {% endif %}
-                <button class="btn radius" type="submit">Selecionar Vencedor</button>
-              </form>
-              {% endif %}
+          <hr>
+          {% if raffle.is_date_valid %}
+          <a href="#" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#quotaBuyModal">Comprar Cotas</a>
+          {% elif request.user.is_staff %}
+          <form method="post" class="d-grid gap-2">
+            {% csrf_token %}
+            <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
+            <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
+            {% if winner_form.non_field_errors %}
+              {% for error in winner_form.non_field_errors %}
+                <div class="alert alert-danger">
+                  <strong>{{ error }}</strong>
+                </div>
+              {% endfor %}
             {% endif %}
-          </div>
-          <div class="card-footer">
-            {{ raffle.description }}
-          </div>
-        </div>
+            <button class="btn btn-info" type="submit">Selecionar Vencedor</button>
+          </form>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="card-footer">
+        {{ raffle.description }}
+      </div>
     </div>
   </div>
-  <div class="card mb-3">
-    <div class="card-body text-center">
-      {% for quota in quotas_result %}
-      <a href="#" class="btn btn-{{ quota.get_btn }} quota-btn" data-bs-toggle="modal"
-        data-bs-target="#quotaShowModal" data-bs-number="{{ quota.number }}" data-bs-status="{{ quota.order.status }}"
-        data-bs-owner="{{ quota.order.owner }}" data-bs-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
-        data-bs-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}">
-        {{ quota.number }}
-      </a>
-      {% endfor %}
+</div>
+<div class="card mb-3 shadow">
+  <div class="card-body text-center">
+    {% for quota in quotas_result %}
+    <a href="#" class="btn btn-{{ quota.get_btn }} quota-btn" data-bs-toggle="modal"
+      data-bs-target="#quotaShowModal" data-bs-number="{{ quota.number }}" data-bs-status="{{ quota.order.status }}"
+      data-bs-owner="{{ quota.order.owner }}" data-bs-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
+      data-bs-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}">
+      {{ quota.number }}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="px-4 my-5 text-center border-bottom">
+  <h1 class="display-4 fw-bold">Formas de Pagamento</h1>
+</div>
+<div class="row g-2">
+  <div class="container d-grid">
+    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment0">
+      Pix CPF
+    </a>
+    <div class="collapse" id="payment0">
+      <div class="card card-body">
+        Transferencia PIX <br>CPF: 000.000.000-00
+      </div>
     </div>
   </div>
+  <div class="container d-grid">
+    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment1">
+      Transferencia Banco
+    </a>
+    <div class="collapse" id="payment1">
+      <div class="card card-body">
+        Transferencia Banco <br>CC: 000000-0 <br>AG: 0000000-0
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="quotaBuyModal" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content bg-dark">
       <div class="modal-header">
         <h3 class="modal-title">Valor Unitário da Cota {{ raffle.quota_value }}</h3>
       </div>
@@ -99,7 +139,7 @@
 
 <div class="modal fade" id="quotaShowModal" tabindex="-1">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content bg-dark">
       <div class="modal-header">
         <h3 class="modal-title" id="quota_title">Detalhes da Cota</h3>
       </div>
@@ -142,9 +182,9 @@
   $(document).ready(function() {
     $("input:checkbox").click(function() {
       if (this.checked){
-        $(this).parent().css("background-color", "#f4e700");
+        $(this).parent().css("background-color", "#ffc107");
       } else {
-        $(this).parent().css("background-color", "#4cd3e3");
+        $(this).parent().css("background-color", "#198754");
       }
 
       var total_value = $("input:checkbox:checked").length * $("#quota_value").text();

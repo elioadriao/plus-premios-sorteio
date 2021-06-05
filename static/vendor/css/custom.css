@@ -5,7 +5,7 @@
 .form-check-inline label{
     line-height: 40px;
     color: #fff;
-    background: #4cd3e3;
+    background: #198754;
     border: 1px solid transparent;
     height: 40px;
     width: 40px;
@@ -14,25 +14,6 @@
     text-align: center;
     cursor: pointer;
     font-weight: bold;
-}
-
-.owl-nav div {
-    border-radius: 20px !important;
-}
-
-.raffles-card img {
-    max-width: 400px;
-    max-height: 320px;
-}
-
-.winners-card img {
-    max-width: 200px;
-    max-height: 200px;
-}
-
-.raffle-detail-card img {
-    max-width: 100%;
-    max-height: 400px;
 }
 
 .quotas-card {
@@ -52,9 +33,13 @@
     margin: 2px;
 }
 
-/*body {
+body {
+    background-color: #ffc107;
     background-image: url("../img/logo/logo-big.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-}*/
+    background-repeat: repeat;
+    backdrop-filter: blur(5px);
+}
+
+nav {
+    border-bottom: 10px solid #198754;
+}

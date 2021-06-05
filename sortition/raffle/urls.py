@@ -1,6 +1,13 @@
 from django.urls import path
-from .views import list_raffles, add_raffles, delete_raffles, detail_raffles, order_payment, order_reset
-
+from .views import (
+    list_raffles,
+    add_raffles,
+    delete_raffles,
+    detail_raffles,
+    order_payment,
+    order_reset,
+    order_link
+)
 
 urlpatterns = [
     path("", list_raffles, name="list-raffles"),
@@ -9,4 +16,5 @@ urlpatterns = [
     path("<int:raffle_pk>/detail/", detail_raffles, name="detail-raffles"),
     path("order/<int:order_pk>/pay/", order_payment, name="pay-order"),
     path("order/<int:order_pk>/reset/", order_reset, name="reset-order"),
+    path("order/<int:order_pk>/link/", order_link, name="link-order"),
 ]

@@ -15,10 +15,7 @@ def list_raffles(request):
     return render(
         request,
         "raffles/list_raffles.html",
-        {
-            "current_page": "raffles", "raffles_result": raffles_result,
-            "winners_result": winners_result
-        },
+        context={"raffles_result": raffles_result, "winners_result": winners_result}
     )
 
 
@@ -39,9 +36,7 @@ def add_raffles(request):
     return render(
         request,
         "raffles/add_raffles.html",
-        context={
-            "form": form,
-        }
+        context={"form": form}
     )
 
 
@@ -68,6 +63,8 @@ def detail_raffles(request, raffle_pk=None):
                 if not quota.order:
                     quota.order = order
             Quota.objects.bulk_update(quotas, ["order"])
+
+            return redirect(reverse("raffles:link-order", args=(order.id,)))
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 
@@ -115,3 +112,10 @@ def order_reset(request, order_pk=None):
         order.save()
 
     return redirect("account:detail-users")
+
+
+@login_required
+def order_link(request, order_pk=None):
+    order = get_object_or_404(QuotaOrder.objects, pk=order_pk)
+
+    return render(request, "raffles/order_link.html", {"order": order})
