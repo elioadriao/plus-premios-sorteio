@@ -9,9 +9,9 @@
 <div class="px-4 my-5 text-center">
   <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Cadastro de Usuário</h1>
 </div>
-<div class="container">
+<div class="container py-3 rounded-3 bg-dark text-light">
   <form method="POST" enctype="multipart/form-data" class="d-grid gap-2">
-    <h1 class="h3 mb-3 fw-normal">Informe os Dados do Usuário</h1>
+    <h3 class="mb-3">Informe os Dados do Usuário</h3>
     {% csrf_token %}
     {{ form }}
     <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Cadastrar</button>

@@ -10,77 +10,82 @@
   <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Detalhes do Sorteio</h1>
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="card mb-3 shadow">
+<div class="container rounded-3 bg-dark text-light">
+  <div class="row">
+    <div class="col-md-6 text-center py-2">
       {% if raffle.image %}
-      <img class="card-img-top" src="{{ raffle.image.url }}" alt="" style="max-height: 32rem; max-width: 32rem; margin: auto;">
+      <img class="img-fluid rounded-3" src="{{ raffle.image.url }}" alt="">
       {% else %}
-      <img class="card-img-top" src="{% static 'vendor/img/empty.png' %}" alt="" style="max-height: 32rem; max-width: 32rem; margin: auto;">
+      <img class="img-fluid rounded-3" src="{% static 'vendor/img/empty.png' %}" alt="">
       {% endif %}
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card mb-3 shadow" style="height: 97%;">
-      <div class="card-header">
-        <p class="h3">{{ raffle.title }}</p>
-      </div>
-      <div class="card-body">
-        <p class="card-text">Data do Sorteio: {{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</p>
-        <p class="card-text">Valor da Cota: {{ raffle.quota_value }}</p>
-        <hr>
-        {% if raffle.is_sorted %}
-        <p class="card-text">Vencedor: {{ raffle.winner }}</p>
-        <p class="card-text">Cota Sorteada: {{ raffle.sorted_quota }}</p>
-        {% else %}
-          <p class="card-text">Percentual das Cotas:</p>
-          <div class="progress bg-success" style="height: 2rem;">
-            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ raffle.get_paid_percent }}%;">
-              {{ raffle.get_paid_percent }}%
-            </div>
-            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ raffle.get_reserved_percent }}%;">
-              {{ raffle.get_reserved_percent }}%
-            </div>
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{ raffle.get_open_percent }}%;">
-              {{ raffle.get_open_percent }}%
-            </div>
+    <div class="col-md-6 py-2">
+      <p class="h3">{{ raffle.title }}</p>
+      <p>Data do Sorteio: {{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</p>
+      <p>Valor da Cota: {{ raffle.quota_value }}</p>
+      <p class="text-muted">{{ raffle.description }}</p>
+      <hr>
+      {% if raffle.is_sorted %}
+      <p class="h4">Sorteio Finalizado</p>
+      <p class="fw-bold bg-success px-3">Vencedor: {{ raffle.winner }}</p>
+      <p class="fw-bold bg-success px-3">Cota Sorteada: {{ raffle.sorted_quota }}</p>
+      {% else %}
+        <p>Percentual das Cotas:</p>
+        <div class="progress bg-success fw-bold" style="height: 2.5rem;">
+          <div class="progress-bar bg-danger" role="progressbar" style="width: {{ raffle.get_paid_percent }}%;">
+            {{ raffle.get_paid_percent }}%
           </div>
-          <hr>
-          {% if raffle.is_date_valid %}
-          <a href="#" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#quotaBuyModal">Comprar Cotas</a>
-          {% elif request.user.is_staff %}
-          <form method="post" class="d-grid gap-2">
-            {% csrf_token %}
-            <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
-            <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
-            {% if winner_form.non_field_errors %}
-              {% for error in winner_form.non_field_errors %}
-                <div class="alert alert-danger">
-                  <strong>{{ error }}</strong>
-                </div>
-              {% endfor %}
-            {% endif %}
-            <button class="btn btn-info" type="submit">Selecionar Vencedor</button>
-          </form>
+          <div class="progress-bar bg-warning" role="progressbar" style="width: {{ raffle.get_reserved_percent }}%;">
+            {{ raffle.get_reserved_percent }}%
+          </div>
+          <div class="progress-bar bg-success" role="progressbar" style="width: {{ raffle.get_open_percent }}%;">
+            {{ raffle.get_open_percent }}%
+          </div>
+        </div>
+        <div class="row mt-3 fw-bold">
+          <div class="col-md-3 col-sm-3">
+            <p>Abertas: </p>
+            <p>Reservadas: </p>
+            <p>Pagas: </p>
+            </div>
+          <div class="col-md-2 col-sm-2 text-center text-dark">
+            <p class="bagde bg-success rounded-3">{{ raffle.get_open_percent }}%</p>
+            <p class="bagde bg-warning rounded-3">{{ raffle.get_reserved_percent }}%</p>
+            <p class="bagde bg-danger rounded-3">{{ raffle.get_paid_percent }}%</p>
+          </div>
+        </div>
+        <hr>
+        {% if raffle.is_date_valid %}
+        <a href="#" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#quotaBuyModal">Comprar Cotas</a>
+        {% elif request.user.is_staff %}
+        <form method="post" class="d-grid gap-2">
+          {% csrf_token %}
+          <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
+          <input type="text" class="form-control" id="id_sorted_quota" name="sorted_quota" placeholder="Informe a Cota Vencedora">
+          {% if winner_form.non_field_errors %}
+            {% for error in winner_form.non_field_errors %}
+              <div class="alert alert-danger">
+                <strong>{{ error }}</strong>
+              </div>
+            {% endfor %}
           {% endif %}
+          <button class="btn btn-info" type="submit">Selecionar Vencedor</button>
+        </form>
         {% endif %}
-      </div>
-      <div class="card-footer">
-        {{ raffle.description }}
+      {% endif %}
+    </div>
+    <div class="col-md-12 py-2">
+      <div class="text-center">
+        {% for quota in quotas_result %}
+        <a href="#" class="btn btn-{{ quota.get_btn }} quota-btn" data-bs-toggle="modal"
+          data-bs-target="#quotaShowModal" data-bs-number="{{ quota.number }}" data-bs-status="{{ quota.order.status }}"
+          data-bs-owner="{{ quota.order.owner }}" data-bs-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
+          data-bs-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}">
+          {{ quota.number }}
+        </a>
+        {% endfor %}
       </div>
     </div>
-  </div>
-</div>
-<div class="card mb-3 shadow">
-  <div class="card-body text-center">
-    {% for quota in quotas_result %}
-    <a href="#" class="btn btn-{{ quota.get_btn }} quota-btn" data-bs-toggle="modal"
-      data-bs-target="#quotaShowModal" data-bs-number="{{ quota.number }}" data-bs-status="{{ quota.order.status }}"
-      data-bs-owner="{{ quota.order.owner }}" data-bs-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
-      data-bs-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}">
-      {{ quota.number }}
-    </a>
-    {% endfor %}
   </div>
 </div>
 
@@ -93,7 +98,7 @@
       Pix CPF
     </a>
     <div class="collapse" id="payment0">
-      <div class="card card-body">
+      <div class="rounded-3 bg-dark text-light py-3 px-3">
         Transferencia PIX <br>CPF: 000.000.000-00
       </div>
     </div>
@@ -103,7 +108,7 @@
       Transferencia Banco
     </a>
     <div class="collapse" id="payment1">
-      <div class="card card-body">
+      <div class="rounded-3 bg-dark text-light py-3 px-3">
         Transferencia Banco <br>CC: 000000-0 <br>AG: 0000000-0
       </div>
     </div>
@@ -112,9 +117,9 @@
 
 <div class="modal fade" id="quotaBuyModal" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content bg-dark">
+    <div class="modal-content bg-dark text-light">
       <div class="modal-header">
-        <h3 class="modal-title">Valor Unitário da Cota {{ raffle.quota_value }}</h3>
+        <h3 class="modal-title">Valor da Cota {{ raffle.quota_value }}</h3>
       </div>
       <div class="modal-body">
         <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
@@ -139,7 +144,7 @@
 
 <div class="modal fade" id="quotaShowModal" tabindex="-1">
   <div class="modal-dialog" role="document">
-    <div class="modal-content bg-dark">
+    <div class="modal-content bg-dark text-light">
       <div class="modal-header">
         <h3 class="modal-title" id="quota_title">Detalhes da Cota</h3>
       </div>

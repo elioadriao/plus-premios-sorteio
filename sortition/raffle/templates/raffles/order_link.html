@@ -10,19 +10,13 @@
   <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Link para Confirmação de Pagamento</h1>
 </div>
 
-<div class="row">
-  <div class="container">
-    <div class="card text-center">
-      <div class="card-body">
-        <a href="{{ order.get_payment_link }}" target="_blank">
-          <img class="mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
-          <h1 class="h3 mb-3 fw-normal">Siga o Link para confirmar seu pagamento no valor de R$ {{ order.value }},00</h1>
-        </a>
-        <div class="grid">
-          <a href="{% url 'raffles:detail-raffles' raffle_pk=order.get_raffle.id %}" class="btn btn-info"> Voltar Para Sorteio</a>
-        </div>
-      </div>
-    </div>
+<div class="container py-3 rounded-3 bg-dark text-light text-center">
+  <a href="{{ order.get_payment_link }}" target="_blank" class="link-light">
+    <img class="mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
+    <h3 class="mb-3">Siga o Link para confirmar seu pagamento no valor de R$ {{ order.value }},00</h3>
+  </a>
+  <div class="grid">
+    <a href="{% url 'raffles:detail-raffles' raffle_pk=order.get_raffle.id %}" class="btn btn-info"> Voltar Para Sorteio</a>
   </div>
 </div>
 

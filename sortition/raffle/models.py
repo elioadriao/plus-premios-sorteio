@@ -152,7 +152,7 @@ class QuotaOrder(models.Model):
         return dict(self.ORDER_STATUS).get(self.status)
 
     def get_quotas_numbers(self):
-        return self.quota_set.all().values_list("number", flat=True)[::1]
+        return ", ".join(map(str, self.quota_set.all().values_list("number", flat=True)[::1]))
 
     def get_raffle(self):
         return self.quota_set.first().raffle
