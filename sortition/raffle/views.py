@@ -8,6 +8,13 @@ from .models import Raffle, Quota, QuotaOrder
 from .forms import RaffleForm, QuotaForm, WinnerForm, RaffleFilterForm
 
 
+def about(request):
+    return render(
+        request,
+        "raffles/about.html",
+    )
+
+
 def index(request):
     raffles_result = Raffle.objects.all().order_by("-date")
     winners_result = raffles_result.exclude(winner__isnull=True)
@@ -33,6 +40,16 @@ def list_raffles(request):
         request,
         "raffles/list_raffles.html",
         context={"raffles_result": raffles_result, "filter_form": filter_form}
+    )
+
+
+def list_winners(request):
+    winners_result = Raffle.objects.filter(winner__isnull=False).order_by("winner")
+
+    return render(
+        request,
+        "raffles/list_winners.html",
+        context={"winners_result": winners_result}
     )
 
 

@@ -27,6 +27,10 @@
     margin: 2px;
 }
 
+.w-768 {
+    max-width: 768px;
+}
+
 body {
     background-color: #ffc107;
     background-image: url("../img/logo/logo-big-blur.png");

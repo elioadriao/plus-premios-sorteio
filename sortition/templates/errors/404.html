@@ -4,10 +4,11 @@
 
 {% block content %}
 
-<div class="container-fluid mt-3">
-  <div class="error-result mx-auto">
-    <p>Ops!</p>
-    <p>Nenhum resultado encontrado</p>
+<div class="container py-3 rounded-3 bg-dark text-light text-center">
+  <h1>Erro 404</h1>
+  <p>404 Pagina não Encontrada</p>
+  <div class="grid">
+    <a href="{% url 'index %}" class="btn btn-info"> Voltar Para inicio</a>
   </div>
 </div>
 

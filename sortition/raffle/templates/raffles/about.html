@@ -1,0 +1,19 @@
+{% extends "layout/navigation.html" %}
+
+{% load static %}
+
+{% block title %}Sobre Nós{% endblock %}
+
+{% block content %}
+
+<div class="px-4 my-5 text-center">
+  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">SOBRE NÓS</h1>
+</div>
+
+<div class="container py-3 rounded-3 bg-dark text-light text-center w-768">
+  <img class="mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
+  <h4 class="mb-4">Texto texto texto, texto texto texto.</h4>
+  <h4 class="mb-4">Muito mais texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.</h4>
+</div>
+
+{% endblock %}

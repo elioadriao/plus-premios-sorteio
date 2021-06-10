@@ -1,13 +1,14 @@
 {% extends "layout/navigation.html" %}
 
-{% block title %}500 Erro no Servidor{% endblock %}
+{% block title %}Erro 500{% endblock %}
 
 {% block content %}
 
-<div class="container-fluid mt-3">
-  <div class="error-result mx-auto">
-    <p>Ops!</p>
-    <p>Nenhum resultado encontrado</p>
+<div class="container py-3 rounded-3 bg-dark text-light text-center">
+  <h1>Erro 500</h1>
+  <p>Ops! Algo de errado aconteceu.</p>
+  <div class="grid">
+    <a href="{% url 'index %}" class="btn btn-info"> Voltar Para inicio</a>
   </div>
 </div>
 

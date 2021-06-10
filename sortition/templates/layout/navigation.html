@@ -12,7 +12,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0 text-right">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
             <a class="nav-link"href="{% url 'index' %}">Inicio</a>
           </li>
@@ -20,14 +20,16 @@
             <a class="nav-link" href="{% url 'raffles:list-raffles' %}">Sorteios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Ganhadores</a>
+            <a class="nav-link" href="{% url 'list-winners' %}">Ganhadores</a>
           </li>
-          <!--li class="nav-item">
-            <a class="nav-link" href="#">Contato</a>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">Contato</a>
           </li-->
-          <li style="margin-right: 11rem; margin-left: 11rem;">
+          <li>
             <hr>
           </li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           {% if user.is_authenticated %}
           {% if user.is_staff %}
           <li class="nav-item">

@@ -6,7 +6,7 @@ from .views import (
     detail_raffles,
     order_payment,
     order_reset,
-    order_link
+    order_link,
 )
 
 urlpatterns = [
