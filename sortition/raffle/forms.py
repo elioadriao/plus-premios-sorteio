@@ -13,7 +13,7 @@ class RaffleForm(forms.ModelForm):
 
     class Meta:
         model = Raffle
-        fields = ("title", "description", "quotas", "quota_value", "date", "image")
+        fields = ("title", "owner", "description", "quotas", "quota_value", "date", "image")
 
 
 class QuotaForm(forms.Form):

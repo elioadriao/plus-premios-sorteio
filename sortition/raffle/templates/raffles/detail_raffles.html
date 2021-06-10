@@ -21,7 +21,12 @@
     </div>
     <div class="col-md-6 py-2">
       <p class="h3">{{ raffle.title }}</p>
-      <p>Data do Sorteio: {{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</p>
+      {% if raffle.owner %}
+      <p>Dono: {{ raffle.owner }}</p>
+      {% else %}
+      <p>Dono: Plus Premios Sorteios</p>
+      {% endif %}
+      <p>Data do Sorteio: {{ raffle.get_date }}</p>
       <p>Valor da Cota: {{ raffle.quota_value }}</p>
       <p class="text-muted">{{ raffle.description }}</p>
       <hr>
@@ -55,7 +60,7 @@
           </div>
         </div>
         <hr>
-        {% if raffle.is_date_valid %}
+        {% if raffle.is_buy_valid %}
         <a href="#" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#quotaBuyModal">Comprar Cotas</a>
         {% elif request.user.is_staff %}
         <form method="post" class="d-grid gap-2">

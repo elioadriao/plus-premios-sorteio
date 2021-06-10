@@ -8,7 +8,7 @@
 
 <div class="container mt-5 text-center py-3 rounded-3 bg-dark text-light">
   <form method="POST" enctype="multipart/form-data" style="max-width: 30rem; margin: 0 auto;">
-    <img class="mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
+    <img class="img-fluid mb-4" src="{% static 'vendor/img/logo/logo-big.png' %}" alt="">
     <h3 class="mb-3">Informe Seus Dados</h3>
     {% csrf_token %}
     <div class="form-floating text-dark">

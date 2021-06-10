@@ -55,7 +55,7 @@ def detail_raffles(request, raffle_pk=None):
     quota_form = QuotaForm(request.POST or None, raffle_pk=raffle.id)
 
     if quota_form.is_valid():
-        if raffle.is_date_valid():
+        if raffle.is_buy_valid():
             quotas = quota_form.cleaned_data["quotas"]
             order_value = len(quotas) * raffle.get_quota_value()
             order = QuotaOrder.objects.create(owner=request.user, value=order_value)

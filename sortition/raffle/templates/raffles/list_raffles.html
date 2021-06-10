@@ -23,7 +23,7 @@
           <a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">
             <div class="carousel-caption text-center">
               <h1>{{ raffle.title }}</h1>
-              <p>Sorteio dia {{ raffle.date|date:"d/m/Y" }} às {{ raffle.date|date:"H:i" }}</p>
+              <p>Data do Sorteio: {{ raffle.get_date }}</p>
               <p>Valor de Cota: {{ raffle.quota_value }}</p>
             </div>
           </a>

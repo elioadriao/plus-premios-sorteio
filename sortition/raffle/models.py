@@ -12,7 +12,7 @@ import os
 def get_upload_to(instance, filename):
     return os.path.join(
         "rifas",
-        "%s.%s" % (instance.date.strftime("%s"), filename.split(".")[-1])
+        "%s.%s" % (instance.created_at.strftime("%s"), filename.split(".")[-1])
     )
 
 
@@ -42,7 +42,15 @@ class Raffle(models.Model):
         default="R$ 100,00"
     )
     date = models.DateTimeField(
-        verbose_name="Data do Sorteio"
+        verbose_name="Data do Sorteio",
+        null=True,
+        blank=True
+    )
+    owner = models.CharField(
+        verbose_name="Dono Titular",
+        max_length=255,
+        null=True,
+        blank=True
     )
     winner = models.ForeignKey(
         User,
@@ -76,12 +84,22 @@ class Raffle(models.Model):
     )
 
     def __str__(self):
-        return "ID: %s Data: %s Cotas: %s" % (
-            str(self.id), self.date.strftime("%d/%m/%y %H:%M"), str(self.quotas)
-        )
+        return "ID: %s Cotas: %s" % (str(self.id), str(self.quotas))
 
-    def is_date_valid(self):
-        return self.date > timezone.now()
+    def is_buy_valid(self):
+        if self.date:
+            return self.date > timezone.now()
+        else:
+            if self.get_paid_percent() == 100:
+                return False
+            else:
+                return True
+
+    def get_date(self):
+        if self.date:
+            return "%s ás %s" % (self.date.strftime("%d/%m/%y"), self.date.strftime("%H:%M"))
+        else:
+            return "Ao final de venda de todas as Cotas"
 
     def is_sorted(self):
         return (self.winner and self.sorted_quota)
