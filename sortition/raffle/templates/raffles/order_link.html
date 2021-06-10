@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="px-4 my-5 text-center">
-  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Link para Confirmação de Pagamento</h1>
+  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">CONFIRME SEU PAGAMENTO VIA WHATSAPP</h1>
 </div>
 
 <div class="container py-3 rounded-3 bg-dark text-light text-center">
@@ -20,30 +20,6 @@
   </div>
 </div>
 
-<div class="px-4 my-5 text-center">
-  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Formas de Pagamento</h1>
-</div>
-<div class="row g-2">
-  <div class="container d-grid">
-    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment0">
-      Pix CPF
-    </a>
-    <div class="collapse" id="payment0">
-      <div class="card card-body">
-        Transferencia PIX <br>CPF: 000.000.000-00
-      </div>
-    </div>
-  </div>
-  <div class="container d-grid">
-    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment1">
-      Transferencia Banco
-    </a>
-    <div class="collapse" id="payment1">
-      <div class="card card-body">
-        Transferencia Banco <br>CC: 000000-0 <br>AG: 0000000-0
-      </div>
-    </div>
-  </div>
-</div>
+{% include "raffles/payment_info.html" %}
 
 {% endblock %}

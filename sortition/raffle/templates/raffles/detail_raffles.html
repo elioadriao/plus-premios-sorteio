@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="px-4 my-5 text-center">
-  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Detalhes do Sorteio</h1>
+  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">DETALHES DO SORTEIO</h1>
 </div>
 
 <div class="container rounded-3 bg-dark text-light">
@@ -43,12 +43,12 @@
           </div>
         </div>
         <div class="row mt-3 fw-bold">
-          <div class="col-md-3 col-sm-3">
+          <div class="col-md-3 col-sm-3 col-6">
             <p>Abertas: </p>
             <p>Reservadas: </p>
             <p>Pagas: </p>
             </div>
-          <div class="col-md-2 col-sm-2 text-center text-dark">
+          <div class="col-md-2 col-sm-2 col-3 text-center text-dark">
             <p class="bagde bg-success rounded-3">{{ raffle.get_open_percent }}%</p>
             <p class="bagde bg-warning rounded-3">{{ raffle.get_reserved_percent }}%</p>
             <p class="bagde bg-danger rounded-3">{{ raffle.get_paid_percent }}%</p>
@@ -89,31 +89,7 @@
   </div>
 </div>
 
-<div class="px-4 my-5 text-center">
-  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">Formas de Pagamento</h1>
-</div>
-<div class="row g-2">
-  <div class="container d-grid">
-    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment0">
-      Pix CPF
-    </a>
-    <div class="collapse" id="payment0">
-      <div class="rounded-3 bg-dark text-light py-3 px-3">
-        Transferencia PIX <br>CPF: 000.000.000-00
-      </div>
-    </div>
-  </div>
-  <div class="container d-grid">
-    <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment1">
-      Transferencia Banco
-    </a>
-    <div class="collapse" id="payment1">
-      <div class="rounded-3 bg-dark text-light py-3 px-3">
-        Transferencia Banco <br>CC: 000000-0 <br>AG: 0000000-0
-      </div>
-    </div>
-  </div>
-</div>
+{% include "raffles/payment_info.html" %}
 
 <div class="modal fade" id="quotaBuyModal" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
