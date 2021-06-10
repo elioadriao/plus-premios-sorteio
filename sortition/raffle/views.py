@@ -5,17 +5,34 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 
 from .models import Raffle, Quota, QuotaOrder
-from .forms import RaffleForm, QuotaForm, WinnerForm
+from .forms import RaffleForm, QuotaForm, WinnerForm, RaffleFilterForm
 
 
-def list_raffles(request):
+def index(request):
     raffles_result = Raffle.objects.all().order_by("-date")
     winners_result = raffles_result.exclude(winner__isnull=True)
 
     return render(
         request,
-        "raffles/list_raffles.html",
+        "raffles/index.html",
         context={"raffles_result": raffles_result, "winners_result": winners_result}
+    )
+
+
+def list_raffles(request):
+    raffles_result = Raffle.objects.all().order_by("-date")
+    filter_form = RaffleFilterForm(request.GET or None, initial={"status": "all"})
+
+    if filter_form.is_valid():
+        if filter_form.cleaned_data["status"] == "open":
+            raffles_result = raffles_result.filter(winner__isnull=True, sorted_quota__isnull=True)
+        elif filter_form.cleaned_data["status"] == "closed":
+            raffles_result = raffles_result.filter(winner__isnull=False, sorted_quota__isnull=False)
+
+    return render(
+        request,
+        "raffles/list_raffles.html",
+        context={"raffles_result": raffles_result, "filter_form": filter_form}
     )
 
 

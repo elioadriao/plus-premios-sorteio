@@ -104,7 +104,7 @@
       </div>
       <div class="modal-body">
         <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
-        <form method="post" class="text-center">
+        <form method="post" class="text-center quota-buy">
           {% csrf_token %}
           {% for quota_input in quota_form.quotas %}
           <div class="form-check-inline mb-2">

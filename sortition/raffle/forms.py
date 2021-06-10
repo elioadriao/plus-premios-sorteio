@@ -16,6 +16,11 @@ class RaffleForm(forms.ModelForm):
         fields = ("title", "owner", "description", "quotas", "quota_value", "date", "image")
 
 
+class RaffleFilterForm(forms.Form):
+    FILTER_CHOICES = [("all", "Todos"), ("open", "Disponiveis"), ("closed", "Finalizados")]
+    status = forms.ChoiceField(choices=FILTER_CHOICES, widget=forms.RadioSelect())
+
+
 class QuotaForm(forms.Form):
     quotas = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple, required=True, queryset=Quota.objects.none()

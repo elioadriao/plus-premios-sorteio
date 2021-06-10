@@ -1,8 +1,8 @@
-.form-check-inline input {
+.quota-buy .form-check-inline input {
     display: none;
 }
 
-.form-check-inline label{
+.quota-buy .form-check-inline label{
     line-height: 40px;
     color: #fff;
     background: #198754;

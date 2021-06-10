@@ -6,18 +6,9 @@
 
 {% block content %}
 <div class="px-4 my-5 text-center">
-  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">TODOS OS SORTEIOS</h1>
+  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">SORTEIOS DISPONIVEIS</h1>
 </div>
-<div class="">
-  <form method="GET" id="filter_form" class="py-2 mb-3 mx-auto rounded-3 bg-dark text-light text-center" style="max-width: 768px;">
-    {% for status_input in filter_form.status %}
-    <div class="form-check-inline">
-      {{ status_input }}
-    </div>
-    {% endfor %}
-  </form>
-</div>
-<div id="rafflesCarousel" class="carousel slide">
+<div id="rafflesCarousel" class="carousel slide">  
   <div class="carousel-inner shadow">
     {% if raffles_result %}
       {% for raffle in raffles_result %}
@@ -59,6 +50,51 @@
   </button>
 </div>
 
+<div class="px-4 my-5 text-center">
+  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">GANHADORES</h1>
+</div>
+<div id="winnersCarousel" class="carousel slide">  
+  <div class="carousel-inner shadow">
+    {% if winners_result %}
+      {% for raffle in winners_result %}
+      <div class="carousel-item">
+        {% if raffle.image %}
+        <img class="img-fluid rounded-3" src="{{ raffle.image.url }}" alt="Sorteio">
+        {% else %}
+        <img class="img-fluid rounded-3" src="{% static 'vendor/img/empty.png' %}" alt="Sorteio">
+        {% endif %}
+
+        <div class="container">
+          <a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">
+            <div class="carousel-caption text-center">
+              <h1>{{ raffle.title }}</h1>
+              <p>Ganhador: {{ raffle.winner }}</p>
+              <p>Cota Premiada: {{ raffle.sorted_quota }}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+    <div class="carousel-item">
+      <img class="img-fluid rounded-3" src="{% static 'vendor/img/empty.png' %}" alt="Sorteio">
+
+      <div class="container">
+        <div class="carousel-caption text-center">
+          <h1>Nenhum Ganhador Encontrado.</h1>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#winnersCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#winnersCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  </button>
+</div>
+
 {% include "raffles/payment_info.html" %}
 
 {% endblock %}
@@ -66,13 +102,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $("#rafflesCarousel").children().children(":first").addClass("active");
+    $("#winnersCarousel").children().children(":first").addClass("active");
   });
-</script>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("input:radio").click(function() {
-      $("#filter_form").submit();
-    });
-});
 </script>
 {% endblock %}
