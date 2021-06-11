@@ -16,7 +16,7 @@ def about(request):
 
 
 def index(request):
-    raffles_result = Raffle.objects.all().order_by("-date")
+    raffles_result = Raffle.objects.filter(winner__isnull=True).order_by("-date")
     winners_result = raffles_result.exclude(winner__isnull=True)
 
     return render(
