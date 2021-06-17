@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  pps:
+    build: .
+    ports:
+      - 8000:80
+    depends_on:
+      - database
+    environment:
+      - RAFFLE_DATABASE=postgres://pps:pps@database:5432/pps
+  database:
+    image: postgres:12-alpine
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pps
+      - POSTGRES_PASSWORD=pps
+      - POSTGRES_DB=pps
+
+volumes:
+  database:
