@@ -12,7 +12,7 @@ import os
 def get_upload_to(instance, filename):
     return os.path.join(
         "rifas",
-        "%s.%s" % (instance.created_at.strftime("%s"), filename.split(".")[-1])
+        "%s.%s" % (timezone.now().strftime("%s"), filename.split(".")[-1])
     )
 
 
