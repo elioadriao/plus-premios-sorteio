@@ -117,7 +117,8 @@ def detail_raffles(request, raffle_pk=None):
         request, "raffles/detail_raffles.html",
         context={
             "raffle": raffle, "quota_form": quota_form,
-            "winner_form": winner_form, "quotas_result": raffle.quota_set.all().order_by("number")
+            "winner_form": winner_form,
+            "quotas_result": raffle.quota_set.filter(order__isnull=True).order_by("number")
         }
     )
 

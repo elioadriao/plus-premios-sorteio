@@ -33,7 +33,7 @@
       {% if raffle.is_sorted %}
       <p class="h4">Sorteio Finalizado</p>
       <p class="fw-bold bg-success px-3">Vencedor: {{ raffle.winner }}</p>
-      <p class="fw-bold bg-success px-3">Cota Sorteada: {{ raffle.sorted_quota }}</p>
+      <p class="fw-bold bg-success px-3">Cota Vencedora: {{ raffle.sorted_quota }}</p>
       {% else %}
         <p>Percentual das Cotas:</p>
         <div class="progress bg-success fw-bold" style="height: 2.5rem;">
@@ -59,10 +59,27 @@
             <p class="bagde bg-danger rounded-3">{{ raffle.get_paid_percent }}%</p>
           </div>
         </div>
-        <hr>
+      {% endif %}
+    </div>
+    <div class="col-md-12 py-2">
+      <div class="text-center">
         {% if raffle.is_buy_valid %}
-        <a href="#" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#quotaBuyModal">Comprar Cotas</a>
-        {% elif request.user.is_staff %}
+        <form method="post" class="text-center quota-buy">
+          {% csrf_token %}
+          {% for quota_input in quota_form.quotas %}
+          <div class="form-check-inline">
+            {{ quota_input }}
+          </div>
+          {% endfor %}
+          <div class="navbar fixed-bottom bg-dark text-light" id="quota-buy-nav" style="display: none;">
+            <div class="container">
+              <h3 class="modal-title" id="order_value_text">Valor total: {{raffle.get_quota_value}}x0 R$ 0,00</h3>
+              <button class="btn btn-primary btn-block mt-2" type="submit">Reservar</button>
+              <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
+            </div>
+          </div>
+        </form>
+        {% elif request.user.is_staff and not raffle.is_sorted %}
         <form method="post" class="d-grid gap-2">
           {% csrf_token %}
           <input type="hidden" id="id_winner_quota_id" name="winner_quota_id">
@@ -77,18 +94,6 @@
           <button class="btn btn-info" type="submit">Selecionar Vencedor</button>
         </form>
         {% endif %}
-      {% endif %}
-    </div>
-    <div class="col-md-12 py-2">
-      <div class="text-center">
-        {% for quota in quotas_result %}
-        <a href="#" class="btn btn-{{ quota.get_btn }} quota-btn" data-bs-toggle="modal"
-          data-bs-target="#quotaShowModal" data-bs-number="{{ quota.number }}" data-bs-status="{{ quota.order.status }}"
-          data-bs-owner="{{ quota.order.owner }}" data-bs-reservedat="{{ quota.order.reserved_at|date:'d/m/Y H:i' }}"
-          data-bs-paidat="{{ quota.order.paid_at|date:'d/m/Y H:i' }}">
-          {{ quota.number }}
-        </a>
-        {% endfor %}
       </div>
     </div>
   </div>
@@ -96,74 +101,8 @@
 
 {% include "raffles/payment_info.html" %}
 
-<div class="modal fade" id="quotaBuyModal" tabindex="-1">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content bg-dark text-light">
-      <div class="modal-header">
-        <h3 class="modal-title">Valor da Cota {{ raffle.quota_value }}</h3>
-      </div>
-      <div class="modal-body">
-        <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
-        <form method="post" class="text-center quota-buy">
-          {% csrf_token %}
-          {% for quota_input in quota_form.quotas %}
-          <div class="form-check-inline mb-2">
-            {{ quota_input }}
-          </div>
-          {% endfor %}
-          <div class="row">
-            <button class="btn btn-primary btn-block mt-2" type="submit">Reservar</button>
-          </div>          
-        </form>
-      </div>
-      <div class="modal-footer">
-        <h3 class="modal-title" id="order_value_text">Valor total da Reserva: R$ 0,00</h3>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="quotaShowModal" tabindex="-1">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content bg-dark text-light">
-      <div class="modal-header">
-        <h3 class="modal-title" id="quota_title">Detalhes da Cota</h3>
-      </div>
-      <div class="modal-body">
-        <h4 id="quota_owner" class="ml-2"></h4>
-        <h4 id="reserved_at" class="ml-2"></h4>
-        <h4 id="paid_at" class="ml-2"></h4>
-      </div>
-    </div>
-  </div>
-</div>
-
 {% endblock %}
 {% block post_js %}
-<script type="text/javascript">
-  $(document).on("click", ".quota-btn", function () {
-    var quotaNumber = $(this).data("bs-number");
-    var quotaOwner = $(this).data("bs-owner");
-    var quotaStatus = $(this).data("bs-status");
-    var reservedAt = $(this).data("bs-reservedat");
-    var paidAt = $(this).data("bs-paidat");
-
-    $("#quota_title").text("Detalhes da Cota " + quotaNumber);
-    if (quotaOwner) {
-      $("#quota_owner").text("Dono da Cota: " + quotaOwner);
-      $("#reserved_at").text("Reservado em: " + reservedAt);
-      if (paidAt){
-        $("#paid_at").text("Pago em: " + paidAt);
-      } else {
-        $("#paid_at").text("Pagamento em Analise");
-      }
-    } else {
-      $("#quota_owner").text("Cota sem Dono");
-      $("#reserved_at").text("");
-      $("#paid_at").text("");
-    }
-  });
-</script>
 <script type="text/javascript">
   $(document).ready(function() {
     $("input:checkbox").click(function() {
@@ -172,11 +111,16 @@
       } else {
         $(this).parent().css("background-color", "#198754");
       }
-
-      var total_value = $("input:checkbox:checked").length * $("#quota_value").text();
-      $("#order_value_text").text("Valor total da Reserva: R$ "+ total_value +",00");
-      $("#order_value").val(total_value);
-
+      var checked_count = $("input:checkbox:checked").length;
+      var quota_value = $("#quota_value").text();
+      if (checked_count > 0) {
+        $("#quota-buy-nav").css("display", "flex");
+        $("#order_value_text").text(
+          "Valor total: "+ quota_value +"x"+ checked_count +" R$ "+ checked_count * quota_value +",00"
+        );
+      }else{
+        $("#quota-buy-nav").css("display", "none");
+      }
     });
 });
 </script>

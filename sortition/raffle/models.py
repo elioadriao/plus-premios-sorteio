@@ -87,13 +87,16 @@ class Raffle(models.Model):
         return "ID: %s Cotas: %s" % (str(self.id), str(self.quotas))
 
     def is_buy_valid(self):
-        if self.date:
-            return self.date > timezone.now()
+        if (self.winner and self.sorted_quota):
+            return False
         else:
-            if self.get_paid_percent() == 100:
-                return False
+            if self.date:
+                return self.date > timezone.now()
             else:
-                return True
+                if self.get_paid_percent() == 100:
+                    return False
+                else:
+                    return True
 
     def get_date(self):
         if self.date:

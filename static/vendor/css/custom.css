@@ -1,34 +1,40 @@
+.quota-buy .form-check-inline {
+    margin: 0.25rem 0.25rem;
+}
+
 .quota-buy .form-check-inline input {
     display: none;
 }
 
 .quota-buy .form-check-inline label{
-    line-height: 40px;
-    color: #fff;
     background: #198754;
-    border: 1px solid transparent;
     height: 40px;
-    width: 40px;
+    line-height: 40px;
     font-size: 20px;
-    border-radius: 20px !important;
-    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
-}
-
-.quota-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    font-size: 30px;
-    line-height: 60px;
-    padding: 0px;
-    font-weight: bold;
-    margin: 2px;
-}
+    padding: 0 0.5rem;
+} 
 
 .w-768 {
     max-width: 768px;
+}
+
+.whatsapp-button {
+    position: fixed;
+    z-index: 45;
+    bottom: 20%;
+    right: 16px;
+}
+
+.whatsapp-button a {
+    background-color: #28a745;
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-size: 1.5em;
+    text-decoration: none;
+    color: #f8f9fa;
 }
 
 body {
