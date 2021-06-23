@@ -176,7 +176,10 @@ class QuotaOrder(models.Model):
         return ", ".join(map(str, self.quota_set.all().values_list("number", flat=True)[::1]))
 
     def get_raffle(self):
-        return self.quota_set.first().raffle
+        try:
+            return self.quota_set.first().raffle
+        except AttributeError:
+            return None
 
     def get_payment_link(self):
         return settings.WHATSAPP_LINK.format(self.value)
