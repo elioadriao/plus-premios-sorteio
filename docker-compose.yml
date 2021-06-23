@@ -4,7 +4,7 @@ services:
   pps:
     build: .
     volumes:
-      ./media:/home/plus-premios-sorteios/media/
+      - ./media:/home/plus-premios-sorteios/media/
     ports:
       - 80:80
     depends_on:
