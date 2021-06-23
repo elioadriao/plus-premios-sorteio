@@ -112,8 +112,10 @@ class Raffle(models.Model):
 
     def dump_orders(self):
         for order in QuotaOrder.objects.all():
-            if order.get_raffle().id == self.id:
-                order.delete()
+            raffle = order.get_raffle()
+            if raffle:
+                if raffle.id == self.id:
+                    order.delete()
         self.quota_set.all().delete()
 
     def get_open_percent(self):
