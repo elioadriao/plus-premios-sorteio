@@ -1,5 +1,7 @@
+{% load static %}
+
 <div class="px-3 my-3">
-    <h1 class="fw-bold text-dark">PAGAMENTO</h1>
+    <h1 class="fw-bold text-dark"><i class="fa fa-credit-card" aria-hidden="true"></i> PAGAMENTO</h1>
   </div>
   <div class="row g-2 w-768 mx-auto"">
     <div class="container d-grid">
@@ -14,9 +16,19 @@
     </div>
     <div class="container d-grid">
       <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment1">
-        Transferencia Banco
+        Pix QR Code
       </a>
       <div class="collapse" id="payment1">
+        <div class="rounded-3 bg-dark text-light py-3 px-3">
+          <img class="img-fluid" src="{% static 'vendor/img/qrcode-pix.png' %}" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="container d-grid">
+      <a href="#" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#payment2">
+        Transferencia Banco
+      </a>
+      <div class="collapse" id="payment2">
         <div class="rounded-3 bg-dark text-light py-3 px-3">
           Transferencia Banco <br>CC: 000000-0 <br>AG: 0000000-0
         </div>

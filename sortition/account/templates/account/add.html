@@ -19,3 +19,13 @@
 </div>
 
 {% endblock %}
+{% block post_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#id_whatsapp").inputmask({
+      mask: ["(99) 9999-9999", "(99) 99999-9999", ],
+      keepStatic: true
+    });  
+  });
+</script>
+{% endblock %}

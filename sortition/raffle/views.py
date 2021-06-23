@@ -90,15 +90,18 @@ def detail_raffles(request, raffle_pk=None):
 
     if quota_form.is_valid():
         if raffle.is_buy_valid():
-            quotas = quota_form.cleaned_data["quotas"]
-            order_value = len(quotas) * raffle.get_quota_value()
-            order = QuotaOrder.objects.create(owner=request.user, value=order_value)
-            for quota in quotas:
-                if not quota.order:
-                    quota.order = order
-            Quota.objects.bulk_update(quotas, ["order"])
+            try:
+                quotas = quota_form.cleaned_data["quotas"]
+                order_value = len(quotas) * raffle.get_quota_value()
+                order = QuotaOrder.objects.create(owner=request.user, value=order_value)
+                for quota in quotas:
+                    if not quota.order:
+                        quota.order = order
+                Quota.objects.bulk_update(quotas, ["order"])
 
-            return redirect(reverse("raffles:link-order", args=(order.id,)))
+                return redirect(reverse("raffles:link-order", args=(order.id,)))
+            except ValueError:
+                pass
 
         return redirect(reverse("raffles:detail-raffles", args=(raffle_pk,)))
 

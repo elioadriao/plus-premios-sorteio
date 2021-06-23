@@ -76,7 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     whatsapp = models.CharField(
         verbose_name="Whatsapp",
-        max_length=11,
+        max_length=15,
         unique=True
     )
     email = models.CharField(
