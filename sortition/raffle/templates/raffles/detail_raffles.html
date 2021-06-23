@@ -6,8 +6,8 @@
 
 {% block content %}
 
-<div class="px-4 my-5 text-center">
-  <h1 class="fw-bold rounded-3 bg-dark bg-gradient text-light">DETALHES DO SORTEIO</h1>
+<div class="px-3 my-3">
+  <h1 class="fw-bold text-dark display-5">DETALHES DO SORTEIO</h1>
 </div>
 
 <div class="container rounded-3 bg-dark text-light">
@@ -116,7 +116,7 @@
       if (checked_count > 0) {
         $("#quota-buy-nav").css("display", "flex");
         $("#order_value_text").text(
-          "Valor total: "+ quota_value +"x"+ checked_count +" R$ "+ checked_count * quota_value +",00"
+          checked_count +" x R$"+ quota_value +",00 >> Valor Total: R$ "+ checked_count * quota_value +",00"
         );
       }else{
         $("#quota-buy-nav").css("display", "none");
