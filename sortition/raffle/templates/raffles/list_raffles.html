@@ -17,46 +17,38 @@
     {% endfor %}
   </form>
 </div>
-<div id="rafflesCarousel" class="carousel slide">
-  <div class="carousel-inner shadow">
-    {% if raffles_result %}
-      {% for raffle in raffles_result %}
-      <div class="carousel-item">
-        {% if raffle.image %}
-        <img class="img-fluid rounded-3" src="{{ raffle.image.url }}" alt="Sorteio">
-        {% else %}
-        <img class="img-fluid rounded-3" src="{% static 'vendor/img/empty.png' %}" alt="Sorteio">
-        {% endif %}
-
-        <div class="container">
-          <a href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">
-            <div class="carousel-caption text-center">
-              <h1>{{ raffle.title }}</h1>
-              <p>Data do Sorteio: {{ raffle.get_date }}</p>
-              <p>Valor de Cota: {{ raffle.quota_value }}</p>
-            </div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+  {% if raffles_result %}
+    {% for raffle in raffles_result %}
+    <div class="col my-2">
+      <div class="bg-dark text-light raffle-item">
+        <div class="raffle-item-image">
+          {% if raffle.image %}
+          <img src="{{ raffle.image.url }}" alt="Sorteio">
+          {% else %}
+          <img src="{% static 'vendor/img/empty.png' %}" alt="Sorteio">
+          {% endif %}
+        </div>
+        <div class="raffle-item-info mx-3 my-2">
+          <h5>{{ raffle.title }}</h5>
+          <p>{{ raffle.get_date }}</p>
+          
+          <a class="btn btn-primary" href="{% url 'raffles:detail-raffles' raffle_pk=raffle.id %}">
+            {% if raffle.is_sorted %}
+            Visualizar
+            {% else %}
+            Comprar
+            {% endif %}
           </a>
         </div>
       </div>
-      {% endfor %}
-    {% else %}
-    <div class="carousel-item">
-      <img class="img-fluid rounded-3" src="{% static 'vendor/img/empty.png' %}" alt="Sorteio">
-
-      <div class="container">
-        <div class="carousel-caption text-center">
-          <h1>Nenhum Sorteio Encontrado.</h1>
-        </div>
-      </div>
     </div>
-    {% endif %}
+    {% endfor %}
+  {% else %}
+  <div class="container">
+    <h1>Nenhum Sorteio Disponivel</h1>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#rafflesCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#rafflesCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-  </button>
+  {% endif %}
 </div>
 
 {% include "raffles/payment_info.html" %}

@@ -27,7 +27,7 @@
     {% if user.quotaorder_set.all %}
       {% for order in user.quotaorder_set.all %}
         {% for quota in order.quota_set.all %}
-        <a href="{% url 'raffles:detail-raffles' raffle_pk=quota.raffle.id %}" class="btn btn-{{ quota.get_btn }}">
+        <a href="{% url 'raffles:detail-raffles' raffle_pk=quota.raffle.id %}" class="quota-label mx-1 my-1 text-light" style="text-decoration: none;">
           {{ quota.number }}
         </a>
         {% endfor %}

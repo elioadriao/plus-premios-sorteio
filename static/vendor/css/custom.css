@@ -15,7 +15,19 @@
     border-radius: 4px;
     cursor: pointer;
     padding: 0 1rem;
-} 
+}
+
+.quota-label {
+    background: #198754;
+    height: 20px;
+    line-height: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0 1rem;
+    text-align: end;
+}
 
 .w-768 {
     max-width: 768px;
@@ -45,4 +57,54 @@ body {
 
 nav {
     border-bottom: 10px solid #198754;
+}
+
+.raffle-item {
+    position: relative;
+    display: flex;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.raffle-item-image {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    min-width: 165px;
+    height: 160px;
+    width: 195px;
+    position: relative;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+}
+
+.raffle-item-image img {
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.raffle-item-info {
+    max-width: 260px;
+}
+
+.raffle-item-info p{
+    font-size: 0.8rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+.raffle-item-info h5{
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    overflow: hidden;
 }
