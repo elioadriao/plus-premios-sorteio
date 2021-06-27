@@ -30,6 +30,18 @@
     text-decoration: none;
 }
 
+.quota-label-sm {
+    background: #198754;
+    height: 20px;
+    line-height: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0 1rem;
+    text-align: end;
+}
+
 .w-768 {
     max-width: 768px;
 }
