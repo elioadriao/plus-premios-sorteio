@@ -64,21 +64,57 @@
     <div class="col-md-12 py-2">
       <div class="text-center">
         {% if raffle.is_buy_valid %}
-        <form method="post" class="text-center quota-buy">
-          {% csrf_token %}
-          {% for quota_input in quota_form.quotas %}
-          <div class="form-check-inline">
-            {{ quota_input }}
+        <ul class="nav nav-pills mb-3 ms-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active bg-success" id="pills-open-tab" data-bs-toggle="pill" data-bs-target="#pills-open"
+             type="button" role="tab" aria-controls="pills-open" aria-selected="true">Abertas [{{ raffle.get_open }}]</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link bg-warning" id="pills-reserved-tab" data-bs-toggle="pill" data-bs-target="#pills-reserved"
+             type="button" role="tab" aria-controls="pills-reserved" aria-selected="false">Reservadas [{{ raffle.get_reserved }}]</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link bg-danger" id="pills-paid-tab" data-bs-toggle="pill" data-bs-target="#pills-paid" type="button"
+             role="tab" aria-controls="pills-paid" aria-selected="false">Pagas [{{ raffle.get_paid }}]</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-open" role="tabpanel" aria-labelledby="pills-open-tab">
+            <form method="post" class="text-center quota-buy">
+              {% csrf_token %}
+              {% for quota_input in quota_form.quotas %}
+              <div class="form-check-inline">
+                {{ quota_input }}
+              </div>
+              {% endfor %}
+              <div class="navbar fixed-bottom bg-dark text-light" id="quota-buy-nav" style="display: none;">
+                <div class="container">
+                  <h3 class="modal-title" id="order_value_text">Valor total: {{raffle.get_quota_value}}x0 R$ 0,00</h3>
+                  <button class="btn btn-primary btn-block mt-2" type="submit">Reservar</button>
+                  <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
+                </div>
+              </div>
+            </form>
           </div>
-          {% endfor %}
-          <div class="navbar fixed-bottom bg-dark text-light" id="quota-buy-nav" style="display: none;">
+          <div class="tab-pane fade" id="pills-reserved" role="tabpanel" aria-labelledby="pills-reserved-tab">
             <div class="container">
-              <h3 class="modal-title" id="order_value_text">Valor total: {{raffle.get_quota_value}}x0 R$ 0,00</h3>
-              <button class="btn btn-primary btn-block mt-2" type="submit">Reservar</button>
-              <p style="display: none;" id="quota_value">{{ raffle.get_quota_value }}</p>
+              {% for reserved_quota in reserved_quotas_result %}
+                <a href="#" class="quota-label mx-1 my-2 text-light bg-warning">
+                  {{ reserved_quota.get_number }}
+                </a>
+              {% endfor %}
             </div>
           </div>
-        </form>
+          <div class="tab-pane fade" id="pills-paid" role="tabpanel" aria-labelledby="pills-paid-tab">
+            <div class="container">
+              {% for paid_quota in paid_quotas_result %}
+                <a href="#" class="quota-label mx-1 my-2 text-light bg-danger">
+                  {{ paid_quota.get_number }}
+                </a>
+              {% endfor %}
+            </div>            
+          </div>
+        </div>
         {% elif request.user.is_staff and not raffle.is_sorted %}
         <form method="post" class="d-grid gap-2">
           {% csrf_token %}

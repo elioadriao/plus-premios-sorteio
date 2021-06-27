@@ -87,6 +87,8 @@ def delete_raffles(request, raffle_pk=None):
 def detail_raffles(request, raffle_pk=None):
     raffle = get_object_or_404(Raffle.objects, pk=raffle_pk)
     quota_form = QuotaForm(request.POST or None, raffle_pk=raffle.id)
+    reserved_quotas_result = raffle.quota_set.filter(order__status="reserved")
+    paid_quotas_result = raffle.quota_set.filter(order__status="paid")
 
     if quota_form.is_valid():
         if raffle.is_buy_valid():
@@ -121,7 +123,9 @@ def detail_raffles(request, raffle_pk=None):
         context={
             "raffle": raffle, "quota_form": quota_form,
             "winner_form": winner_form,
-            "quotas_result": raffle.quota_set.filter(order__isnull=True).order_by("number")
+            "quotas_result": raffle.quota_set.filter(order__isnull=True).order_by("number"),
+            "reserved_quotas_result": reserved_quotas_result,
+            "paid_quotas_result": paid_quotas_result,
         }
     )
 

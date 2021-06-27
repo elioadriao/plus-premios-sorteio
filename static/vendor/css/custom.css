@@ -19,14 +19,15 @@
 
 .quota-label {
     background: #198754;
-    height: 20px;
-    line-height: 20px;
-    font-size: 15px;
+    height: 30px;
+    line-height: 40px;
+    font-size: 20px;
     font-weight: bold;
     border-radius: 4px;
     cursor: pointer;
-    padding: 0 1rem;
+    padding: 0.24rem 1rem;
     text-align: end;
+    text-decoration: none;
 }
 
 .w-768 {
@@ -107,4 +108,12 @@ nav {
     -webkit-line-clamp: 1;
     display: -webkit-box;
     overflow: hidden;
+}
+
+.nav-link {
+    color: #212529;
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: #f8f9fa;
 }
