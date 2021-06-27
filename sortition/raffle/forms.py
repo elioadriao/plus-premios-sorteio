@@ -5,6 +5,11 @@ from .models import Raffle, Quota
 from django.core.exceptions import ValidationError
 
 
+class QuotaField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return "{:0>4}".format(obj.number)
+
+
 class RaffleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RaffleForm, self).__init__(*args, **kwargs)
@@ -22,7 +27,7 @@ class RaffleFilterForm(forms.Form):
 
 
 class QuotaForm(forms.Form):
-    quotas = forms.ModelMultipleChoiceField(
+    quotas = QuotaField(
         widget=forms.CheckboxSelectMultiple, required=True, queryset=Quota.objects.none()
     )
 

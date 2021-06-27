@@ -117,18 +117,25 @@ class Raffle(models.Model):
                 if raffle.id == self.id:
                     order.delete()
         self.quota_set.all().delete()
+    
+    def get_open(self):
+        return self.quota_set.filter(order__isnull=True).count()
+    
+    def get_reserved(self):
+        return self.quota_set.filter(order__status="reserved").count()
+
+    def get_paid(self):
+        return self.quota_set.filter(order__status="paid").count()
+
 
     def get_open_percent(self):
-        open_quotas_count = self.quota_set.filter(order__isnull=True).count()
-        return int((open_quotas_count * 100) / self.quotas)
+        return int((self.get_open() * 100) / self.quotas)
 
     def get_reserved_percent(self):
-        reserved_quotas_count = self.quota_set.filter(order__status="reserved").count()
-        return int((reserved_quotas_count * 100) / self.quotas)
+        return int((self.get_reserved() * 100) / self.quotas)
 
     def get_paid_percent(self):
-        paid_quotas_count = self.quota_set.filter(order__status="paid").count()
-        return int((paid_quotas_count * 100) / self.quotas)
+        return int((self.get_paid() * 100) / self.quotas)
 
 
 class QuotaOrder(models.Model):
@@ -219,11 +226,5 @@ class Quota(models.Model):
         else:
             return "Aberto"
 
-    def get_btn(self):
-        if self.order:
-            if self.get_status() == "Reservado":
-                return "warning"
-            else:
-                return "danger"
-        else:
-            return "success"
+    def get_number(self):
+        return "{:0>4}".format(self.number)

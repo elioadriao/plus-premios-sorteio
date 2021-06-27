@@ -21,7 +21,7 @@
       {% endfor %}
     {% else %}
     <div class="carousel-item">
-      <img src="{% static 'vendor/img/empty.png' %}" alt="Sorteio">
+      <img src="{% static 'vendor/img/empty_long.png' %}" alt="Sorteio">
 
       <div class="container">
         <div class="carousel-caption text-center">
@@ -58,7 +58,9 @@
     {% endfor %}
   {% else %}
   <div class="container">
-    <h1>Nenhum Sorteio Disponivel</h1>
+    <div class="bg-dark text-light raffle-item px-3 pt-1">
+      <h5>Nenhum Sorteio Disponivel</h5>
+    </div>
   </div>
   {% endif %}
 </div>
