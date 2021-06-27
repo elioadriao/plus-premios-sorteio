@@ -16,6 +16,21 @@ class UserForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
 
+    def clean_whatsapp(self):
+        whatsapp = self.cleaned_data.get("whatsapp")
+        wpp_cleaned = whatsapp.split(" ")[1]
+        if "_" in wpp_cleaned:
+            raise forms.ValidationError("Whatsapp invalido ou incorreto.")
+        if User.objects.filter(whatsapp__endswith=wpp_cleaned).exists():
+            raise forms.ValidationError("Whatsapp já cadastrado no sistema.")
+        return whatsapp
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get("password1")
+        if len(password1) < 8:
+            raise forms.ValidationError("Senha deve ter no minimo 8 digitos.")
+        return password1
+
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
