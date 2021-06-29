@@ -6,7 +6,7 @@ services:
     volumes:
       - ./media:/home/plus-premios-sorteios/media/
     ports:
-      - 80:80
+      - 8000:8000
     depends_on:
       - database
     environment:
