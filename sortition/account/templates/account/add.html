@@ -11,7 +11,8 @@
 </div>
 <div class="container py-3 rounded-3 bg-dark text-light w-768">
   <form method="POST" enctype="multipart/form-data" class="d-grid gap-2">
-    <h3 class="mb-3">Informe os Dados do Usuário</h3>
+    <h3 class="mb-2">Informe os Dados do Usuário</h3>
+    <h6 class="mb-3 text-muted">Já possui conta? <a href="{% url 'account:login' %}">clique aqui</a> para entrar</h6>
     {% csrf_token %}
     {{ form }}
     <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Cadastrar</button>
